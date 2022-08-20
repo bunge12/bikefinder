@@ -66,6 +66,7 @@
     "eslint-plugin-testing-library": "^5.2.0",
     "husky": "^8.0.1",
     "jest": "^27.5.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.6.2",
     "storybook-addon-turbo-build": "^1.1.0",
     "storybook-dark-mode": "^1.1.0",
@@ -76,5 +77,15 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "components/**/*.tsx": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "pages/**/*.tsx": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
