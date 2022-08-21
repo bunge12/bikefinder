@@ -29,6 +29,8 @@
     "@mantine/next": "5.2.0",
     "@mantine/notifications": "5.2.0",
     "@mantine/prism": "5.2.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.10.1",
     "@next/bundle-analyzer": "^12.1.4",
     "@tabler/icons": "^1.78.1",
     "cookies-next": "^2.1.1",
