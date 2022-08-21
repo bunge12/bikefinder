@@ -4,26 +4,26 @@ const distance = (lat1: number, lon1: number, lat2: number, lon2: number, unit: 
   if (lat1 === lat2 && lon1 === lon2) {
     return 0;
   }
-    const radlat1 = (Math.PI * lat1) / 180;
-    const radlat2 = (Math.PI * lat2) / 180;
-    const theta = lon1 - lon2;
-    const radtheta = (Math.PI * theta) / 180;
-    let dist =
-      Math.sin(radlat1) * Math.sin(radlat2) +
-      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    if (dist > 1) {
-      dist = 1;
-    }
-    dist = Math.acos(dist);
-    dist = (dist * 180) / Math.PI;
-    dist = dist * 60 * 1.1515;
-    if (unit === 'K') {
-      dist *= 1.609344;
-    }
-    if (unit === 'N') {
-      dist *= 0.8684;
-    }
-    return dist;
+  const radlat1 = (Math.PI * lat1) / 180;
+  const radlat2 = (Math.PI * lat2) / 180;
+  const theta = lon1 - lon2;
+  const radtheta = (Math.PI * theta) / 180;
+  let dist =
+    Math.sin(radlat1) * Math.sin(radlat2) +
+    Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  if (dist > 1) {
+    dist = 1;
+  }
+  dist = Math.acos(dist);
+  dist = (dist * 180) / Math.PI;
+  dist = dist * 60 * 1.1515;
+  if (unit === 'K') {
+    dist *= 1.609344;
+  }
+  if (unit === 'N') {
+    dist *= 0.8684;
+  }
+  return dist;
 };
 
 const findNearestStations = (
@@ -61,11 +61,14 @@ const findNearestStations = (
     .filter((station) => {
       if (filters.item === 'bikes') {
         return station.num_bikes_available_types.mechanical > filters.quantity;
-      } if (filters.item === 'e-bikes') {
+      }
+      if (filters.item === 'e-bikes') {
         return station.num_bikes_available_types.ebike > filters.quantity;
-      } if (filters.item === 'docks') {
+      }
+      if (filters.item === 'docks') {
         return station.num_docks_available > filters.quantity;
-      } return station;
+      }
+      return station;
     })
     .slice(0, filters.stations);
 
@@ -75,6 +78,7 @@ const findNearestStations = (
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.body) throw new Error('no request body found');
+    const filters = JSON.parse(req.body);
 
     const status = (
       await fetch('https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_status').then(
@@ -87,7 +91,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
     ).data;
 
-    const result = findNearestStations(stations, status, req.body);
+    const result = findNearestStations(stations, status, filters);
     if (result.length === 0) {
       res.status(204);
     }

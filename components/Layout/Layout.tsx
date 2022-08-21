@@ -3,7 +3,7 @@ import AppFooter from '../Footer/Footer';
 import AppHeader from '../Header/Header';
 
 type Props = {
-  children: React.ReactNode;
+  children: React.ReactElement;
 };
 
 export default function Layout({ children }: Props) {
