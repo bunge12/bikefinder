@@ -1,5 +1,18 @@
+import { Container, createStyles, Header } from '@mantine/core';
 import React from 'react';
 
-export default function Header() {
-  return <div>Header</div>;
+const useStyles = createStyles((theme) => ({
+  header: {
+    backgroundColor: theme.colors.gradient,
+  },
+}));
+
+export default function AppHeader() {
+  const { classes } = useStyles();
+
+  return (
+    <Header height={50} className={classes.header}>
+      <Container>Headerr</Container>
+    </Header>
+  );
 }
