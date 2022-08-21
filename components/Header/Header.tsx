@@ -18,6 +18,7 @@ const useStyles = createStyles((theme) => ({
   },
   button: {
     backgroundColor: 'transparent',
+    border: '2px solid #fff',
   },
 }));
 
