@@ -1,5 +1,7 @@
 import { Text, Skeleton, Container, Stack, Button, createStyles } from '@mantine/core';
 import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+import { showNotification } from '@mantine/notifications';
 import Layout from '../components/Layout/Layout';
 import Station from '../components/Station/Station';
 
@@ -10,9 +12,17 @@ const useStyles = createStyles(() => ({
   },
 }));
 
+const fetcher = async (url: string, query: object) => {
+  const res = await fetch(url, { method: 'POST', body: JSON.stringify(query) });
+  if (!res.ok) {
+    throw new Error('An error occurred while fetching the data.');
+  }
+  return res.json();
+};
+
 export default function HomePage() {
   const { classes } = useStyles();
-  const [stations, setStations] = useState([]);
+  const [stations, setStations] = useState<any>([]);
   const [lat, setLat] = useState<number>();
   const [lng, setLng] = useState<number>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,43 +32,34 @@ export default function HomePage() {
     item: 'bikes',
   });
 
-  useEffect(() => {
-    setStations([]);
-    // setNotification();
-    lat &&
-      lng &&
-      fetch('/api/bikeshare', {
-        method: 'POST',
-        body: JSON.stringify({
-          ...searchQuery,
-          lat,
-          lng,
-        }),
-      })
-        .then((response) => response.json())
-        .then((res) => {
-          setStations(res);
+  const { data, error } = useSWR(
+    lat && lng
+      ? [
+          '/api/bikeshare',
+          {
+            ...searchQuery,
+            lat,
+            lng,
+          },
+        ]
+      : null,
+    fetcher
+  );
 
-          if (res.status === 204) {
-            // setNotification({
-            //   text: 'Your search returned no results. Please modify your search and try again.',
-            // });
-          }
-        })
-        .catch(() => {
-          // setNotification({
-          //   color: 'red',
-          //   text: 'There was an error processing your request. Please try again.',
-          // });
-        });
-  }, [searchQuery, lat, lng]);
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setStations(data);
+    }
+  }, [data]);
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  }, [error]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
-      // setNotification({
-      //   color: 'red',
-      //   text: 'Geolocation is not supported by your browser',
-      // });
+      showNotification({ message: 'Geolocation is not supported by your browser', color: 'red' });
     } else {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -66,10 +67,13 @@ export default function HomePage() {
           setLng(position.coords.longitude);
         },
         () => {
-          // setNotification({
-          //   color: 'red',
-          //   text: 'Unable to retrieve your location',
-          // });
+          showNotification({
+            title: '😟 Unable to retrieve your location',
+            message: 'Please click "allow" when prompted by your browser and reload the page.',
+            color: 'red',
+            disallowClose: true,
+            autoClose: false,
+          });
         }
       );
     }
@@ -90,7 +94,7 @@ export default function HomePage() {
           )}
         </Text>
         <Stack spacing="xs">
-          {stations.map((station, i) => (
+          {stations.map((station: any, i: any) => (
             <Station key={i} station={station} />
           ))}
           {stations.length === 0 && (
