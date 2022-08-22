@@ -59,7 +59,13 @@ export default function HomePage() {
 
   const getLocation = () => {
     if (!navigator.geolocation) {
-      showNotification({ message: 'Geolocation is not supported by your browser', color: 'red' });
+      showNotification({
+        title: '😟 Unable to retrieve your location',
+        message: 'Geolocation is not supported by your browser',
+        color: 'red',
+        disallowClose: true,
+        autoClose: false,
+      });
     } else {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -69,7 +75,8 @@ export default function HomePage() {
         () => {
           showNotification({
             title: '😟 Unable to retrieve your location',
-            message: 'Please click "allow" when prompted by your browser and reload the page.',
+            message:
+              'Please click "Allow Location Access" when prompted by your browser and reload the page.',
             color: 'red',
             disallowClose: true,
             autoClose: false,
