@@ -1,9 +1,17 @@
-import { Text, Skeleton, Container, Stack, Button } from '@mantine/core';
+import { Text, Skeleton, Container, Stack, Button, createStyles } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout/Layout';
 import Station from '../components/Station/Station';
 
+const useStyles = createStyles(() => ({
+  button: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
+
 export default function HomePage() {
+  const { classes } = useStyles();
   const [stations, setStations] = useState([]);
   const [lat, setLat] = useState<number>();
   const [lng, setLng] = useState<number>();
@@ -29,7 +37,6 @@ export default function HomePage() {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           setStations(res);
 
           if (res.status === 204) {
@@ -83,7 +90,9 @@ export default function HomePage() {
           )}
         </Text>
         <Stack spacing="xs">
-          {stations.map((station, i) => <Station key={i} station={station} />)}
+          {stations.map((station, i) => (
+            <Station key={i} station={station} />
+          ))}
           {stations.length === 0 && (
             <>
               <Station key={1} />
@@ -93,11 +102,12 @@ export default function HomePage() {
               <Station key={5} />
             </>
           )}
-
-          <Button color="bike-share" variant="outline" uppercase>
+        </Stack>
+        <div className={classes.button}>
+          <Button color="brandBlue" variant="outline" uppercase mt="lg">
             search for a station
           </Button>
-        </Stack>
+        </div>
       </Container>
     </Layout>
   );
