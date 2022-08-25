@@ -1,4 +1,6 @@
+import { Text } from '@mantine/core';
 import React from 'react';
+import QuantityInput from '../QuantityInput/QuantityInput';
 
 type Props = {
   onSearch: () => void;
@@ -9,5 +11,10 @@ export default function Search({ onSearch, searchQuery }: Props) {
   onSearch();
   console.log(searchQuery);
 
-  return <div>Search</div>;
+  return (
+    <div>
+      <Text>Search for</Text>
+      <QuantityInput startingValue={5} onValueChange={() => {}} />
+    </div>
+  );
 }
