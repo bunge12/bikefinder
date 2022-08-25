@@ -2,10 +2,14 @@ import { Text, createStyles, Chip, Button } from '@mantine/core';
 import React, { useState } from 'react';
 import QuantityInput from '../QuantityInput/QuantityInput';
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
   row: {
     display: 'flex',
     justifyContent: 'center',
+    margin: theme.spacing.xl,
+    [theme.fn.smallerThan('md')]: {
+      margin: theme.spacing.md,
+    },
   },
   textWrapper: {
     display: 'flex',
@@ -28,7 +32,7 @@ export default function Search({ onSearch, searchQuery }: Props) {
     <>
       <div className={classes.row}>
         <div className={classes.textWrapper}>
-          <Text>Search for</Text>
+          <Text mr="md">Search for</Text>
         </div>
         <QuantityInput startingValue={stations} onValueChange={setStations} />
       </div>
@@ -38,7 +42,7 @@ export default function Search({ onSearch, searchQuery }: Props) {
       <div className={classes.row}>
         <QuantityInput startingValue={quantity} onValueChange={setQuantity} />
         <div className={classes.textWrapper}>
-          <Text>available</Text>
+          <Text ml="md">available</Text>
         </div>
       </div>
       <div className={classes.row}>
