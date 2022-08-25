@@ -3,7 +3,12 @@ import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { theme } from '../components/theme';
 
-export const parameters = { layout: 'fullscreen' };
+export const parameters = {
+  layout: 'fullscreen',
+  viewport: {
+    defaultViewport: 'mobile2',
+  },
+};
 
 function ThemeWrapper(props: { children: React.ReactNode }) {
   return (
