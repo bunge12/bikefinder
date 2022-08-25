@@ -53,7 +53,7 @@ interface QuantityInputProps {
 
 export default function QuantityInput({
   min = 1,
-  max = 10,
+  max = 20,
   onValueChange,
   startingValue,
 }: QuantityInputProps) {

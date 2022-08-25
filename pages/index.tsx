@@ -1,9 +1,10 @@
-import { Text, Skeleton, Container, Stack, Button, createStyles } from '@mantine/core';
+import { Text, Skeleton, Container, Stack, Button, createStyles, Modal } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { showNotification } from '@mantine/notifications';
 import Layout from '../components/Layout/Layout';
 import Station from '../components/Station/Station';
+import Search from '../components/Search/Search';
 
 const useStyles = createStyles(() => ({
   button: {
@@ -20,19 +21,24 @@ const fetcher = async (url: string, query: object) => {
   return res.json();
 };
 
+type SearchQuery = {
+  stations: number;
+  quantity: number;
+  item: string;
+};
+
 export default function HomePage() {
   const { classes } = useStyles();
-  const [stations, setStations] = useState<any>([]);
+  const [openedSearch, setOpenedSearch] = useState(false);
   const [lat, setLat] = useState<number>();
   const [lng, setLng] = useState<number>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [searchQuery, setSearchQuery] = useState({
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     stations: 5,
     quantity: 1,
     item: 'bikes',
   });
 
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     lat && lng
       ? [
           '/api/bikeshare',
@@ -45,17 +51,6 @@ export default function HomePage() {
       : null,
     fetcher
   );
-
-  useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setStations(data);
-    }
-  }, [data]);
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-    }
-  }, [error]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -90,21 +85,26 @@ export default function HomePage() {
     getLocation();
   }, []);
 
+  const handleSearch = (query: SearchQuery) => {
+    setSearchQuery(query);
+    setOpenedSearch(false);
+  };
+
   return (
     <Layout>
       <Container>
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
-          {stations.length > 0 ? (
-            <>Showing {stations.length} closest bike share stations:</>
+          {data && Array.isArray(data) ? (
+            <>Showing {data.length} closest bike share stations:</>
           ) : (
             <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />
           )}
         </Text>
         <Stack spacing="xs">
-          {stations.map((station: any, i: any) => (
-            <Station key={i} station={station} />
-          ))}
-          {stations.length === 0 && (
+          {data &&
+            Array.isArray(data) &&
+            data.map((station: any, i: any) => <Station key={i} station={station} />)}
+          {!data && (
             <>
               <Station key={1} />
               <Station key={2} />
@@ -115,10 +115,19 @@ export default function HomePage() {
           )}
         </Stack>
         <div className={classes.button}>
-          <Button color="brandBlue" variant="outline" uppercase mt="lg">
+          <Button
+            color="brandBlue"
+            variant="outline"
+            uppercase
+            mt="lg"
+            onClick={() => setOpenedSearch(true)}
+          >
             search for a station
           </Button>
         </div>
+        <Modal centered opened={openedSearch} onClose={() => setOpenedSearch(false)}>
+          <Search onSearch={handleSearch} searchQuery={searchQuery} />
+        </Modal>
       </Container>
     </Layout>
   );
