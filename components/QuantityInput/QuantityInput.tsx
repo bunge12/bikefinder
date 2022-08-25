@@ -4,6 +4,7 @@ import { IconPlus, IconMinus } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
+    width: 150,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -14,6 +15,12 @@ const useStyles = createStyles((theme) => ({
 
     '&:focus-within': {
       borderColor: theme.colors[theme.primaryColor][6],
+    },
+    [theme.fn.largerThan('sm')]: {
+      width: 200,
+    },
+    [theme.fn.largerThan('md')]: {
+      width: 250,
     },
   },
 
