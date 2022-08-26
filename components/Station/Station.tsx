@@ -68,6 +68,7 @@ export default function Station({ station }: Props) {
             size="xl"
             style={{ marginLeft: 'auto' }}
             component="a"
+            aria-label="Navigate to station with Google Maps"
             target="_blank"
             href={`https://www.google.ca/maps/dir//${station.lat},${station.lon}/`}
           >
