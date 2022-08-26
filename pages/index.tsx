@@ -1,15 +1,36 @@
-import { Text, Skeleton, Container, Stack, Button, createStyles, Modal } from '@mantine/core';
+import {
+  Text,
+  Skeleton,
+  Container,
+  Stack,
+  Button,
+  createStyles,
+  Modal,
+  Alert,
+} from '@mantine/core';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { showNotification } from '@mantine/notifications';
+import { IconAlertCircle } from '@tabler/icons';
 import Layout from '../components/Layout/Layout';
 import Station from '../components/Station/Station';
 import Search from '../components/Search/Search';
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
   button: {
     display: 'flex',
     justifyContent: 'center',
+  },
+  alert: {
+    [theme.fn.largerThan('lg')]: {
+      width: '25%',
+    },
+    [theme.fn.largerThan('md')]: {
+      width: '50%',
+    },
+    [theme.fn.smallerThan('md')]: {
+      width: '100%',
+    },
   },
 }));
 
@@ -94,15 +115,27 @@ export default function HomePage() {
     <Layout>
       <Container>
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
-          {data && Array.isArray(data) ? (
-            <>Showing {data.length} closest bike share stations:</>
-          ) : (
-            <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />
+          {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
+          {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
+          {data && data.length === 0 && (
+            <Alert
+              className={classes.alert}
+              icon={<IconAlertCircle size={16} />}
+              title="Your search returned no results!"
+              styles={{
+                root: { margin: '0px auto' },
+                message: { textAlign: 'left' },
+              }}
+            >
+              Your search query returned no results. Please click &quot;Search for a station&quot;
+              button below and adjust your search parameters. Hope to get you biking as soon as
+              possible! 🚲
+            </Alert>
           )}
         </Text>
         <Stack spacing="xs">
           {data &&
-            Array.isArray(data) &&
+            data.length > 0 &&
             data.map((station: any, i: any) => <Station key={i} station={station} />)}
           {!data && (
             <>

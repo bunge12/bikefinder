@@ -78,7 +78,7 @@ const findNearestStations = (
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.body) throw new Error('no request body found');
-    const filters = JSON.parse(req.body);
+    const filters = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
     const status = (
       await fetch('https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_status').then(
@@ -92,13 +92,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ).data;
 
     const result = findNearestStations(stations, status, filters);
-    if (result.length === 0) {
-      res.status(204);
-    }
 
-    if (result.length > 0) {
-      res.status(200).json(result);
-    }
+    res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
