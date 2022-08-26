@@ -1,4 +1,4 @@
-import { Button, Container, createStyles, Header, Title } from '@mantine/core';
+import { Container, createStyles, Header, Title } from '@mantine/core';
 import React from 'react';
 
 const useStyles = createStyles((theme) => ({
@@ -31,13 +31,13 @@ export default function AppHeader() {
         <Title order={4} color="white">
           Bike Finder
         </Title>
-        <Button
+        {/* <Button
           variant="default"
           className={classes.button}
           styles={{ label: { color: 'white', ':hover': { color: 'black' } } }}
         >
           Refresh
-        </Button>
+        </Button> */}
       </Container>
     </Header>
   );
