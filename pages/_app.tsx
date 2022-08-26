@@ -5,6 +5,7 @@ import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { GoogleAnalytics } from 'nextjs-google-analytics';
 import { theme } from '../components/theme';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
@@ -19,6 +20,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
   return (
     <>
+      <GoogleAnalytics trackPageViews />
       <Head>
         <title>Bike Finder App</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
