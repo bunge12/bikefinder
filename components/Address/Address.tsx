@@ -18,6 +18,7 @@ export default function Address() {
     const returnResults = async () => {
       const result = await searchResults(debounced as string);
       setSuggestions(result.features);
+      console.log(result.features);
     };
 
     debounced && debounced !== '' && returnResults();
