@@ -76,13 +76,15 @@ export default function Station({ station }: Props) {
           </Badge>
         </Indicator>
 
-        <Badge
-          size="lg"
-          leftSection={<DockIcon />}
-          styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
-        >
-          {station && station.num_docks_available}
-        </Badge>
+        <Indicator disabled={!station || station?.num_docks_disabled === 0} color="red">
+          <Badge
+            size="lg"
+            leftSection={<DockIcon />}
+            styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
+          >
+            {station && station.num_docks_available}
+          </Badge>
+        </Indicator>
         {station && (
           <ActionIcon
             color="brandGreen"
@@ -101,6 +103,12 @@ export default function Station({ station }: Props) {
         <Badge color="red">
           {station.num_bikes_disabled} {station.num_bikes_disabled === 1 ? 'bike' : 'bikes'} at this
           station {station.num_bikes_disabled === 1 ? 'is' : 'are'} disabled
+        </Badge>
+      )}
+      {station && station.num_docks_disabled > 0 && (
+        <Badge color="red">
+          {station.num_docks_disabled} {station.num_docks_disabled === 1 ? 'dock' : 'docks'} at this
+          station {station.num_docks_disabled === 1 ? 'is' : 'are'} disabled
         </Badge>
       )}
     </Card>
