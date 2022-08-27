@@ -53,6 +53,10 @@ DisabledBikes2.args = {
 
 export const DisabledDocks = Template.bind({});
 DisabledDocks.args = { station: { ...sampleStation, num_docks_disabled: 1 } };
+export const DisabledDocks2 = Template.bind({});
+DisabledDocks2.args = {
+  station: { ...sampleStation, num_bikes_disabled: 1, num_docks_disabled: 1 },
+};
 
 export const Loading = Template.bind({});
 Loading.args = {};
