@@ -40,5 +40,19 @@ const sampleStation = {
 export const Default = Template.bind({});
 Default.args = { station: sampleStation };
 
+export const DisabledBikes1 = Template.bind({});
+DisabledBikes1.args = { station: { ...sampleStation, num_bikes_disabled: 1 } };
+export const DisabledBikes2 = Template.bind({});
+DisabledBikes2.args = {
+  station: {
+    ...sampleStation,
+    num_bikes_available_types: { mechanical: 0, ebike: 4 },
+    num_bikes_disabled: 2,
+  },
+};
+
+export const DisabledDocks = Template.bind({});
+DisabledDocks.args = { station: { ...sampleStation, num_docks_disabled: 1 } };
+
 export const Loading = Template.bind({});
 Loading.args = {};

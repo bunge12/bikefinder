@@ -1,4 +1,4 @@
-import { Badge, Card, Group, Text, Space, ActionIcon, Skeleton } from '@mantine/core';
+import { Badge, Card, Group, Text, Space, ActionIcon, Skeleton, Indicator } from '@mantine/core';
 import React from 'react';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
@@ -14,6 +14,8 @@ type Props = {
       ebike: number;
     };
     num_docks_available: number;
+    num_bikes_disabled: number;
+    num_docks_disabled: number;
     lat: number;
     lon: number;
   };
@@ -41,20 +43,39 @@ export default function Station({ station }: Props) {
       </Group>
       <Space h="sm" />
       <Group spacing={5}>
-        <Badge
-          size="lg"
-          leftSection={<PedalBikeIcon />}
-          styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
+        <Indicator
+          disabled={
+            !station ||
+            station?.num_bikes_disabled === 0 ||
+            station?.num_bikes_available_types.mechanical === 0
+          }
+          color="red"
         >
-          {station && station.num_bikes_available_types.mechanical}
-        </Badge>
-        <Badge
-          size="lg"
-          leftSection={<ElectricBikeIcon />}
-          styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
+          <Badge
+            size="lg"
+            leftSection={<PedalBikeIcon />}
+            styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
+          >
+            {station && station.num_bikes_available_types.mechanical}
+          </Badge>
+        </Indicator>
+        <Indicator
+          disabled={
+            !station ||
+            station?.num_bikes_disabled === 0 ||
+            station?.num_bikes_available_types.ebike === 0
+          }
+          color="red"
         >
-          {station && station.num_bikes_available_types.ebike}
-        </Badge>
+          <Badge
+            size="lg"
+            leftSection={<ElectricBikeIcon />}
+            styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
+          >
+            {station && station.num_bikes_available_types.ebike}
+          </Badge>
+        </Indicator>
+
         <Badge
           size="lg"
           leftSection={<DockIcon />}
@@ -76,6 +97,12 @@ export default function Station({ station }: Props) {
           </ActionIcon>
         )}
       </Group>
+      {station && station.num_bikes_disabled > 0 && (
+        <Badge color="red">
+          {station.num_bikes_disabled} {station.num_bikes_disabled === 1 ? 'bike' : 'bikes'} at this
+          station {station.num_bikes_disabled === 1 ? 'is' : 'are'} disabled
+        </Badge>
+      )}
     </Card>
   );
 }
