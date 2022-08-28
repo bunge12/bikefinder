@@ -1,5 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { rest } from 'msw';
 import Header from './Header';
+import { apiResponse } from '../data';
 
 export default {
   title: 'Header',
@@ -9,4 +11,6 @@ export default {
 const Template: ComponentStory<typeof Header> = () => <Header />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.parameters = {
+  msw: [rest.get('https://api.mapbox.com/*', (req, res, ctx) => res(ctx.json(apiResponse)))],
+};
