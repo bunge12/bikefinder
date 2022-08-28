@@ -1,5 +1,6 @@
-import { Container, createStyles, Header, Title } from '@mantine/core';
+import { Button, Container, createStyles, Header, Popover, Title } from '@mantine/core';
 import React from 'react';
+import Address from '../Address/Address';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -25,6 +26,8 @@ const useStyles = createStyles((theme) => ({
 export default function AppHeader() {
   const { classes } = useStyles();
 
+  const cb = (a: number, b: number) => console.log(a, b);
+
   return (
     <Header height={60} className={classes.header}>
       <Container className={classes.container}>
@@ -38,6 +41,14 @@ export default function AppHeader() {
         >
           Refresh
         </Button> */}
+        <Popover position="bottom-end">
+          <Popover.Target>
+            <Button>Edit Location</Button>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Address onSave={cb} />
+          </Popover.Dropdown>
+        </Popover>
       </Container>
     </Header>
   );
