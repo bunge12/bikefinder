@@ -57,7 +57,7 @@ export default function Address({ onSave }: Props) {
         onChange={setValue}
       />
       <Group position="right" spacing="xs" mt="md">
-        <Button variant="outline">Go Back</Button>
+        <Button variant="outline">Close</Button>
         <Button onClick={handleSave} color="brandGreen">
           Save
         </Button>

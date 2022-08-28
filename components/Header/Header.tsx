@@ -21,6 +21,9 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: 'transparent',
     border: '2px solid #fff',
   },
+  popover: {
+    width: '25%',
+  },
 }));
 
 export default function AppHeader() {
@@ -34,9 +37,27 @@ export default function AppHeader() {
         <Title order={4} color="white">
           Bike Finder
         </Title>
-        <Popover position="bottom-end" shadow="md" withArrow width="90%" offset={9}>
+        <Popover
+          position="bottom-end"
+          shadow="md"
+          withArrow
+          offset={9}
+          styles={(theme) => ({
+            dropdown: {
+              width: '35%',
+              [theme.fn.smallerThan('md')]: {
+                width: '50%',
+              },
+              [theme.fn.smallerThan('sm')]: {
+                width: '95%',
+              },
+            },
+          })}
+        >
           <Popover.Target>
-            <Button>Edit Location</Button>
+            <Button variant="white" color="brandBlue">
+              Edit Location
+            </Button>
           </Popover.Target>
           <Popover.Dropdown>
             <Address onSave={cb} />
