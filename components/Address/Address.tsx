@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
+import { Autocomplete, Button } from '@mantine/core';
 
 const searchResults = async (query: string) => {
   const response = await fetch(
@@ -17,7 +18,9 @@ export default function Address() {
   useEffect(() => {
     const returnResults = async () => {
       const result = await searchResults(debounced as string);
-      setSuggestions(result.features);
+      setSuggestions(
+        result.features.map((feature: any) => ({ ...feature, value: feature.place_name }))
+      );
       console.log(result);
     };
 
@@ -26,12 +29,21 @@ export default function Address() {
 
   return (
     <div>
-      <form>
+      {/* <form>
         <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
       </form>
       {suggestions.map((each: any, i) => (
         <div key={i}>{each.place_name}</div>
-      ))}
+      ))} */}
+
+      <Autocomplete
+        label="Address"
+        placeholder="Start typing to see suggestions"
+        data={suggestions}
+        value={value}
+        onChange={setValue}
+      />
+      <Button>Save</Button>
     </div>
   );
 }
