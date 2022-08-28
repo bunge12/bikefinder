@@ -75,6 +75,8 @@
     "husky": "^8.0.1",
     "jest": "^27.5.1",
     "lint-staged": "^13.0.3",
+    "msw": "^0.45.0",
+    "msw-storybook-addon": "^1.6.3",
     "prettier": "^2.6.2",
     "storybook-addon-turbo-build": "^1.1.0",
     "storybook-dark-mode": "^1.1.0",
@@ -95,5 +97,8 @@
       "prettier --write",
       "eslint --fix"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
