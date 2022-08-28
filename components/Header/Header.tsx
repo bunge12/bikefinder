@@ -1,5 +1,5 @@
 import { Button, Container, createStyles, Header, Popover, Title } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
 import Address from '../Address/Address';
 
 const useStyles = createStyles((theme) => ({
@@ -28,6 +28,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function AppHeader() {
   const { classes } = useStyles();
+  const [opened, setOpened] = useState(false);
 
   const cb = (a: number, b: number) => console.log(a, b);
 
@@ -38,6 +39,8 @@ export default function AppHeader() {
           Bike Finder
         </Title>
         <Popover
+          opened={opened}
+          onChange={setOpened}
           position="bottom-end"
           shadow="md"
           withArrow
@@ -55,12 +58,12 @@ export default function AppHeader() {
           })}
         >
           <Popover.Target>
-            <Button variant="white" color="brandBlue">
+            <Button variant="white" color="brandBlue" onClick={() => setOpened((o) => !o)}>
               Edit Location
             </Button>
           </Popover.Target>
           <Popover.Dropdown>
-            <Address onSave={cb} />
+            <Address onClose={() => setOpened(false)} onSave={cb} />
           </Popover.Dropdown>
         </Popover>
       </Container>

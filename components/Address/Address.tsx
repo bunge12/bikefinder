@@ -12,6 +12,7 @@ const searchResults = async (query: string) => {
 
 type Props = {
   onSave: (lat: number, lng: number) => void;
+  onClose: () => void;
 };
 
 type Feature = {
@@ -19,7 +20,7 @@ type Feature = {
   center: number[];
 };
 
-export default function Address({ onSave }: Props) {
+export default function Address({ onSave, onClose }: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
@@ -42,13 +43,6 @@ export default function Address({ onSave }: Props) {
 
   return (
     <div>
-      {/* <form>
-        <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
-      </form>
-      {suggestions.map((each: any, i) => (
-        <div key={i}>{each.place_name}</div>
-      ))} */}
-
       <Autocomplete
         label="Enter Address"
         placeholder="Start typing to see suggestions"
@@ -57,7 +51,9 @@ export default function Address({ onSave }: Props) {
         onChange={setValue}
       />
       <Group position="right" spacing="xs" mt="md">
-        <Button variant="outline">Close</Button>
+        <Button onClick={onClose} variant="outline">
+          Close
+        </Button>
         <Button onClick={handleSave} color="brandGreen">
           Save
         </Button>
