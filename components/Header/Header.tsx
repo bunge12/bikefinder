@@ -34,14 +34,7 @@ export default function AppHeader() {
         <Title order={4} color="white">
           Bike Finder
         </Title>
-        {/* <Button
-          variant="default"
-          className={classes.button}
-          styles={{ label: { color: 'white', ':hover': { color: 'black' } } }}
-        >
-          Refresh
-        </Button> */}
-        <Popover position="bottom-end">
+        <Popover position="bottom-end" shadow="md" withArrow width="90%" offset={9}>
           <Popover.Target>
             <Button>Edit Location</Button>
           </Popover.Target>
