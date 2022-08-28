@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
-import { Autocomplete, Button } from '@mantine/core';
+import { Autocomplete, Button, Group } from '@mantine/core';
 
 const searchResults = async (query: string) => {
   const response = await fetch(
@@ -10,7 +10,16 @@ const searchResults = async (query: string) => {
   return response.json();
 };
 
-export default function Address() {
+type Props = {
+  onSave: (lat: number, lng: number) => void;
+};
+
+type Feature = {
+  place_name: string;
+  center: number[];
+};
+
+export default function Address({ onSave }: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
@@ -19,13 +28,17 @@ export default function Address() {
     const returnResults = async () => {
       const result = await searchResults(debounced as string);
       setSuggestions(
-        result.features.map((feature: any) => ({ ...feature, value: feature.place_name }))
+        result.features.map((feature: Feature) => ({ ...feature, value: feature.place_name }))
       );
-      console.log(result);
     };
 
     debounced && debounced !== '' && returnResults();
   }, [debounced]);
+
+  const handleSave = () => {
+    const selection: any = suggestions.find((each: Feature) => each.place_name === value);
+    selection && onSave(selection.center[1], selection.center[0]);
+  };
 
   return (
     <div>
@@ -37,13 +50,18 @@ export default function Address() {
       ))} */}
 
       <Autocomplete
-        label="Address"
+        label="Enter Address"
         placeholder="Start typing to see suggestions"
         data={suggestions}
         value={value}
         onChange={setValue}
       />
-      <Button>Save</Button>
+      <Group position="right" spacing="xs" mt="md">
+        <Button variant="outline">Go Back</Button>
+        <Button onClick={handleSave} color="brandGreen">
+          Save
+        </Button>
+      </Group>
     </div>
   );
 }

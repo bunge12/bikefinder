@@ -1,9 +1,12 @@
 import { rest } from 'msw';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Address from './Address';
 
 export default {
   title: 'Address',
-};
+  component: Address,
+  argTypes: { onSave: { action: 'clicked' } },
+} as ComponentMeta<typeof Address>;
 
 const response = {
   type: 'FeatureCollection',
@@ -264,9 +267,8 @@ const response = {
     'NOTICE: © 2022 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service (https://www.mapbox.com/about/maps/). This response and the information it contains may not be retained. POI(s) provided by Foursquare.',
 };
 
-export const Default = () => <Address />;
+const Template: ComponentStory<typeof Address> = (args) => <Address {...args} />;
+export const Default = Template.bind({});
 Default.parameters = {
-  msw: [
-    rest.get('https://api.mapbox.com/*', (req, res, ctx) => res(ctx.json(response))),
-  ],
+  msw: [rest.get('https://api.mapbox.com/*', (req, res, ctx) => res(ctx.json(response)))],
 };
