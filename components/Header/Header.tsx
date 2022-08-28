@@ -52,7 +52,7 @@ export default function AppHeader() {
                 width: '50%',
               },
               [theme.fn.smallerThan('sm')]: {
-                width: '95%',
+                width: '90%',
               },
             },
           })}
