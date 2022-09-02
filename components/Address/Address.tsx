@@ -24,6 +24,7 @@ export default function Address({ onSave, onClose }: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
+  const [selection, setSelection] = useState<any>();
 
   useEffect(() => {
     const returnResults = async () => {
@@ -37,8 +38,7 @@ export default function Address({ onSave, onClose }: Props) {
   }, [debounced]);
 
   const handleSave = () => {
-    const selection: any = suggestions.find((each: Feature) => each.place_name === value);
-    selection && onSave(selection.center[1], selection.center[0]);
+    onSave(selection.center[1], selection.center[0]);
   };
 
   return (
@@ -49,6 +49,7 @@ export default function Address({ onSave, onClose }: Props) {
         data={suggestions}
         value={value}
         onChange={setValue}
+        onItemSubmit={setSelection}
       />
       <Group position="right" spacing="xs" mt="md">
         <Button onClick={onClose} variant="outline">
