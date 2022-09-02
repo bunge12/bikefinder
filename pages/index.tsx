@@ -13,9 +13,10 @@ import useSWR from 'swr';
 import { showNotification } from '@mantine/notifications';
 import { IconAlertCircle } from '@tabler/icons';
 import { NextSeo } from 'next-seo';
-import Layout from '../components/Layout/Layout';
 import Station from '../components/Station/Station';
 import Search from '../components/Search/Search';
+import AppHeader from '../components/Header/Header';
+import AppFooter from '../components/Footer/Footer';
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -112,6 +113,11 @@ export default function HomePage() {
     setOpenedSearch(false);
   };
 
+  const handleSave = (newLat: number, newLng: number) => {
+    setLat(newLat);
+    setLng(newLng);
+  };
+
   return (
     <>
       <NextSeo
@@ -124,57 +130,57 @@ export default function HomePage() {
             'Quickly locate the closest bike share stations. Modify your search to find the number of bikes, e-bikes, or docks you need!',
         }}
       />
-      <Layout>
-        <Container>
-          <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
-            {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
-            {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
-            {data && data.length === 0 && (
-              <Alert
-                className={classes.alert}
-                icon={<IconAlertCircle size={16} />}
-                title="Your search returned no results!"
-                styles={{
-                  root: { margin: '0px auto' },
-                  message: { textAlign: 'left' },
-                }}
-              >
-                Your search query returned no results. Please click &quot;Search for a station&quot;
-                button below and adjust your search parameters. Hope to get you biking as soon as
-                possible! 🚲
-              </Alert>
-            )}
-          </Text>
-          <Stack spacing="xs">
-            {data &&
-              data.length > 0 &&
-              data.map((station: any, i: any) => <Station key={i} station={station} />)}
-            {!data && (
-              <>
-                <Station key={1} />
-                <Station key={2} />
-                <Station key={3} />
-                <Station key={4} />
-                <Station key={5} />
-              </>
-            )}
-          </Stack>
-          <div className={classes.button}>
-            <Button
-              color="brandBlue"
-              variant="outline"
-              uppercase
-              mt="lg"
-              onClick={() => setOpenedSearch(true)}
+      <AppHeader onSave={handleSave} onRefresh={getLocation} />
+      <Container>
+        <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
+          {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
+          {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
+          {data && data.length === 0 && (
+            <Alert
+              className={classes.alert}
+              icon={<IconAlertCircle size={16} />}
+              title="Your search returned no results!"
+              styles={{
+                root: { margin: '0px auto' },
+                message: { textAlign: 'left' },
+              }}
             >
-              search for a station
-            </Button>
-          </div>
-          <Modal centered opened={openedSearch} onClose={() => setOpenedSearch(false)}>
-            <Search onSearch={handleSearch} searchQuery={searchQuery} />
-          </Modal>
-        </Container>
-      </Layout>
+              Your search query returned no results. Please click &quot;Search for a station&quot;
+              button below and adjust your search parameters. Hope to get you biking as soon as
+              possible! 🚲
+            </Alert>
+          )}
+        </Text>
+        <Stack spacing="xs">
+          {data &&
+            data.length > 0 &&
+            data.map((station: any, i: any) => <Station key={i} station={station} />)}
+          {!data && (
+            <>
+              <Station key={1} />
+              <Station key={2} />
+              <Station key={3} />
+              <Station key={4} />
+              <Station key={5} />
+            </>
+          )}
+        </Stack>
+        <div className={classes.button}>
+          <Button
+            color="brandBlue"
+            variant="outline"
+            uppercase
+            mt="lg"
+            onClick={() => setOpenedSearch(true)}
+          >
+            search for a station
+          </Button>
+        </div>
+        <Modal centered opened={openedSearch} onClose={() => setOpenedSearch(false)}>
+          <Search onSearch={handleSearch} searchQuery={searchQuery} />
+        </Modal>
+      </Container>
+      <AppFooter />
     </>
   );
 }
