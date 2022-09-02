@@ -52,6 +52,11 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
         value={value}
         onChange={setValue}
         onItemSubmit={setSelection}
+        styles={{
+          input: {
+            fontSize: '1em',
+          },
+        }}
       />
       <Group position="right" spacing="xs" mt="md">
         <Button onClick={onClose} variant="outline">
