@@ -6,9 +6,10 @@ import { apiResponse } from '../data';
 export default {
   title: 'Header',
   component: Header,
+  argTypes: { onSave: { action: 'clicked' } },
 } as ComponentMeta<typeof Header>;
 
-const Template: ComponentStory<typeof Header> = () => <Header />;
+const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
 
 export const Default = Template.bind({});
 Default.parameters = {

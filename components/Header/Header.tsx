@@ -26,11 +26,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function AppHeader() {
+type Props = {
+  onSave: (lat: number, lng: number) => void;
+};
+
+export default function AppHeader({ onSave }: Props) {
   const { classes } = useStyles();
   const [opened, setOpened] = useState(false);
 
-  const cb = (a: number, b: number) => console.log(a, b);
+  const handleSave = (lat: number, lng: number) => {
+    setOpened(false);
+    onSave(lat, lng);
+  };
 
   return (
     <Header height={60} className={classes.header}>
@@ -63,7 +70,7 @@ export default function AppHeader() {
             </Button>
           </Popover.Target>
           <Popover.Dropdown>
-            <Address onClose={() => setOpened(false)} onSave={cb} />
+            <Address onClose={() => setOpened(false)} onSave={handleSave} />
           </Popover.Dropdown>
         </Popover>
       </Container>
