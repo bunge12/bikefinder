@@ -13,6 +13,7 @@ const searchResults = async (query: string) => {
 type Props = {
   onSave: (lat: number, lng: number) => void;
   onClose: () => void;
+  onRefresh: () => void;
 };
 
 type Feature = {
@@ -20,11 +21,13 @@ type Feature = {
   center: number[];
 };
 
-export default function Address({ onSave, onClose }: Props) {
+export default function Address({ onSave, onClose, onRefresh }: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
   const [selection, setSelection] = useState<any>();
+
+  onRefresh();
 
   useEffect(() => {
     const returnResults = async () => {

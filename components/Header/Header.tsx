@@ -28,9 +28,10 @@ const useStyles = createStyles((theme) => ({
 
 type Props = {
   onSave: (lat: number, lng: number) => void;
+  onRefresh: () => void;
 };
 
-export default function AppHeader({ onSave }: Props) {
+export default function AppHeader({ onSave, onRefresh }: Props) {
   const { classes } = useStyles();
   const [opened, setOpened] = useState(false);
 
@@ -70,7 +71,7 @@ export default function AppHeader({ onSave }: Props) {
             </Button>
           </Popover.Target>
           <Popover.Dropdown>
-            <Address onClose={() => setOpened(false)} onSave={handleSave} />
+            <Address onClose={() => setOpened(false)} onSave={handleSave} onRefresh={onRefresh} />
           </Popover.Dropdown>
         </Popover>
       </Container>

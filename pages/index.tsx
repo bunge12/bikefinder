@@ -130,7 +130,7 @@ export default function HomePage() {
             'Quickly locate the closest bike share stations. Modify your search to find the number of bikes, e-bikes, or docks you need!',
         }}
       />
-      <AppHeader onSave={handleSave} />
+      <AppHeader onSave={handleSave} onRefresh={getLocation} />
       <Container>
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
           {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
