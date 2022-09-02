@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Autocomplete, Button, Group } from '@mantine/core';
+import { IconCurrentLocation } from '@tabler/icons';
 
 const searchResults = async (query: string) => {
   const response = await fetch(
@@ -27,8 +28,6 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
   const [suggestions, setSuggestions] = useState([]);
   const [selection, setSelection] = useState<any>();
 
-  onRefresh();
-
   useEffect(() => {
     const returnResults = async () => {
       const result = await searchResults(debounced as string);
@@ -47,7 +46,7 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
   return (
     <div>
       <Autocomplete
-        label="Enter Address"
+        label="Address, Point of Interest, or Postal Code"
         placeholder="Start typing to see suggestions"
         data={suggestions}
         value={value}
@@ -57,6 +56,16 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
       <Group position="right" spacing="xs" mt="md">
         <Button onClick={onClose} variant="outline">
           Close
+        </Button>
+        <Button
+          onClick={() => {
+            onRefresh();
+            onClose();
+          }}
+          leftIcon={<IconCurrentLocation />}
+          variant="outline"
+        >
+          Use geolocation
         </Button>
         <Button onClick={handleSave} color="brandGreen">
           Save
