@@ -1,20 +1,9 @@
-import {
-  Text,
-  Skeleton,
-  Container,
-  Stack,
-  Button,
-  createStyles,
-  Modal,
-  Alert,
-} from '@mantine/core';
+import { Text, Skeleton, Container, Stack, createStyles, Alert } from '@mantine/core';
 import { useState } from 'react';
 import useSWR from 'swr';
-
 import { IconAlertCircle } from '@tabler/icons';
 import { NextSeo } from 'next-seo';
 import Station from '../components/Station/Station';
-import Search from '../components/Search/Search';
 import AppHeader from '../components/Header/Header';
 import AppFooter from '../components/Footer/Footer';
 import Shortcuts from '../components/Shortcuts/Shortcuts';
@@ -55,7 +44,6 @@ type SearchQuery = {
 
 export default function HomePage() {
   const { classes } = useStyles();
-  const [openedSearch, setOpenedSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     stations: 5,
     quantity: 1,
@@ -76,11 +64,6 @@ export default function HomePage() {
     fetcher
   );
 
-  const handleSearch = (query: SearchQuery) => {
-    setSearchQuery(query);
-    setOpenedSearch(false);
-  };
-
   return (
     <>
       <NextSeo
@@ -95,10 +78,12 @@ export default function HomePage() {
       />
       <AppHeader />
       <Container>
-        <Shortcuts onSearch={handleSearch} searchQuery={searchQuery} />
+        <Shortcuts onSearch={setSearchQuery} searchQuery={searchQuery} />
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
           {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
-          {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
+          {!data && searchQuery.lat && searchQuery.lng && (
+            <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />
+          )}
           {data && data.length === 0 && (
             <Alert
               className={classes.alert}
@@ -119,7 +104,7 @@ export default function HomePage() {
           {data &&
             data.length > 0 &&
             data.map((station: any, i: any) => <Station key={i} station={station} />)}
-          {!data && (
+          {!data && searchQuery.lat && searchQuery.lng && (
             <>
               <Station key={1} />
               <Station key={2} />
@@ -129,20 +114,6 @@ export default function HomePage() {
             </>
           )}
         </Stack>
-        <div className={classes.button}>
-          <Button
-            color="brandBlue"
-            variant="outline"
-            uppercase
-            mt="lg"
-            onClick={() => setOpenedSearch(true)}
-          >
-            search for a station
-          </Button>
-        </div>
-        <Modal centered opened={openedSearch} onClose={() => setOpenedSearch(false)}>
-          <Search onSearch={handleSearch} searchQuery={searchQuery} />
-        </Modal>
       </Container>
       <AppFooter />
     </>
