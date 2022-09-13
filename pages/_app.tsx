@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { GoogleAnalytics } from 'nextjs-google-analytics';
+import mailgo from 'mailgo';
 import { theme } from '../components/theme';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
@@ -17,6 +18,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     setColorScheme(nextColorScheme);
     setCookie('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
   };
+
+  useEffect(() => {
+    mailgo({ showFooter: false });
+  }, []);
 
   return (
     <>
