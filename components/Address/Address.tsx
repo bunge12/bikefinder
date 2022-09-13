@@ -62,22 +62,20 @@ export default function Address({ onSave, onClose, onRefresh, hideControls = fal
       />
       <Group position={!hideControls ? 'right' : 'center'} spacing="xs" mt="sm">
         {!hideControls && (
-          <>
-            <Button onClick={onClose} variant="outline">
-              Close
-            </Button>
-            <Button
-              onClick={() => {
-                onRefresh && onRefresh();
-                onClose && onClose();
-              }}
-              leftIcon={<IconCurrentLocation />}
-              variant="outline"
-            >
-              Use geolocation
-            </Button>
-          </>
+          <Button onClick={onClose} variant="outline">
+            Close
+          </Button>
         )}
+        <Button
+          onClick={() => {
+            onRefresh && onRefresh();
+            onClose && onClose();
+          }}
+          leftIcon={<IconCurrentLocation />}
+          variant="outline"
+        >
+          Use GPS
+        </Button>
         <Button
           onClick={handleSave}
           color="brandGreen"

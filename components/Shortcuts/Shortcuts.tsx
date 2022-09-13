@@ -65,11 +65,12 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
   const stations = searchQuery?.stations;
   const [quantity, setQuantity] = useState(searchQuery?.quantity);
   const [item, setItem] = useState(searchQuery?.item);
-  // const [searchBy, setSearchBy] = useState('gps');
+  const [searchBy, setSearchBy] = useState('gps');
   const spoilerControlRef = useRef<HTMLButtonElement>(null);
 
   const handeSave = (lat: number, lng: number) => {
     console.log('spoiler clicked from shortcuts', lat, lng);
+    setSearchBy('address');
     spoilerControlRef.current && spoilerControlRef.current.click();
   };
 
@@ -109,7 +110,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
           maxHeight={0}
           showLabel={
             <Group spacing="xs" position="center">
-              <Text size="sm">Using your GPS location</Text>
+              <Text size="sm">Using your {searchBy === 'gps' ? 'GPS location' : 'address'}</Text>
               <IconChevronDown />
             </Group>
           }
