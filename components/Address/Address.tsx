@@ -13,8 +13,9 @@ const searchResults = async (query: string) => {
 
 type Props = {
   onSave: (lat: number, lng: number) => void;
-  onClose: () => void;
-  onRefresh: () => void;
+  onClose?: () => void;
+  onRefresh?: () => void;
+  hideControls?: boolean;
 };
 
 type Feature = {
@@ -22,7 +23,7 @@ type Feature = {
   center: number[];
 };
 
-export default function Address({ onSave, onClose, onRefresh }: Props) {
+export default function Address({ onSave, onClose, onRefresh, hideControls = false }: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
@@ -46,7 +47,7 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
   return (
     <div>
       <Autocomplete
-        label="Address, Point of Interest, or Postal Code"
+        label="Search by Address, Point of Interest, or Postal Code"
         placeholder="Start typing to see suggestions"
         data={suggestions}
         value={value}
@@ -58,20 +59,24 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
           },
         }}
       />
-      <Group position="right" spacing="xs" mt="md">
-        <Button onClick={onClose} variant="outline">
-          Close
-        </Button>
-        <Button
-          onClick={() => {
-            onRefresh();
-            onClose();
-          }}
-          leftIcon={<IconCurrentLocation />}
-          variant="outline"
-        >
-          Use geolocation
-        </Button>
+      <Group position={!hideControls ? 'right' : 'center'} spacing="xs" mt="sm">
+        {!hideControls && (
+          <>
+            <Button onClick={onClose} variant="outline">
+              Close
+            </Button>
+            <Button
+              onClick={() => {
+                onRefresh && onRefresh();
+                onClose && onClose();
+              }}
+              leftIcon={<IconCurrentLocation />}
+              variant="outline"
+            >
+              Use geolocation
+            </Button>
+          </>
+        )}
         <Button onClick={handleSave} color="brandGreen">
           Save
         </Button>
