@@ -133,7 +133,7 @@ export default function HomePage() {
       />
       <AppHeader onSave={handleSave} onRefresh={getLocation} />
       <Container>
-        <Shortcuts />
+        <Shortcuts onSearch={handleSearch} searchQuery={searchQuery} />
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
           {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
           {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
