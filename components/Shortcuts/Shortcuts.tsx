@@ -2,7 +2,18 @@ import React, { useState } from 'react';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
 import DockIcon from '@mui/icons-material/Dock';
-import { createStyles, Card, Text, SimpleGrid, UnstyledButton, Group, Button } from '@mantine/core';
+import {
+  createStyles,
+  Card,
+  Text,
+  SimpleGrid,
+  UnstyledButton,
+  Group,
+  Button,
+  Spoiler,
+  Center,
+} from '@mantine/core';
+import { IconChevronDown } from '@tabler/icons';
 import QuantityInput from '../QuantityInput/QuantityInput';
 
 const cards = [
@@ -53,6 +64,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
   const stations = searchQuery?.stations;
   const [quantity, setQuantity] = useState(searchQuery?.quantity);
   const [item, setItem] = useState(searchQuery?.item);
+  // const [searchBy, setSearchBy] = useState('gps');
 
   const items = cards.map((card) => (
     <UnstyledButton
@@ -72,6 +84,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
       <Group position="apart">
         <Text className={classes.title}>I&apos;m looking for...</Text>
       </Group>
+
       <SimpleGrid cols={3} mt="md">
         {items}
       </SimpleGrid>
@@ -82,6 +95,21 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
           Show results
         </Button>
       </Group>
+      <Center>
+        <Spoiler
+          mt="md"
+          maxHeight={0}
+          showLabel={
+            <Group spacing="xs">
+              <Text size="sm">Using your GPS location</Text>
+              <IconChevronDown />
+            </Group>
+          }
+          hideLabel="Hide"
+        >
+          Settings
+        </Spoiler>
+      </Center>
     </Card>
   );
 }
