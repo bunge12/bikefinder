@@ -16,6 +16,7 @@ type Props = {
   onClose?: () => void;
   onRefresh?: () => void;
   hideControls?: boolean;
+  onGPS?: () => void;
 };
 
 type Feature = {
@@ -23,7 +24,13 @@ type Feature = {
   center: number[];
 };
 
-export default function Address({ onSave, onClose, onRefresh, hideControls = false }: Props) {
+export default function Address({
+  onSave,
+  onClose,
+  onRefresh,
+  hideControls = false,
+  onGPS,
+}: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
@@ -70,6 +77,7 @@ export default function Address({ onSave, onClose, onRefresh, hideControls = fal
           onClick={() => {
             onRefresh && onRefresh();
             onClose && onClose();
+            onGPS && onGPS();
           }}
           leftIcon={<IconCurrentLocation />}
           variant="outline"

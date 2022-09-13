@@ -74,6 +74,11 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
     spoilerControlRef.current && spoilerControlRef.current.click();
   };
 
+  const handleGPSSwitch = () => {
+    setSearchBy('gps');
+    spoilerControlRef.current && spoilerControlRef.current.click();
+  };
+
   const items = cards.map((card) => (
     <UnstyledButton
       key={card.title}
@@ -110,7 +115,9 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
           maxHeight={0}
           showLabel={
             <Group spacing="xs" position="center">
-              <Text size="sm">Using your {searchBy === 'gps' ? 'GPS location' : 'address'}</Text>
+              <Text size="sm">
+                Using {searchBy === 'gps' ? 'GPS location' : 'address provided'}
+              </Text>
               <IconChevronDown />
             </Group>
           }
@@ -126,7 +133,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
             },
           }}
         >
-          <Address onSave={handeSave} hideControls />
+          <Address onSave={handeSave} onGPS={handleGPSSwitch} hideControls />
         </Spoiler>
       </Center>
     </Card>
