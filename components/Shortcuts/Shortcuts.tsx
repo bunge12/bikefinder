@@ -27,6 +27,7 @@ const cards = [
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+    overflow: 'visible',
   },
 
   title: {
@@ -48,6 +49,16 @@ const useStyles = createStyles((theme) => ({
   selected: {
     border: `1.5px solid ${theme.colors.brandBlue[7]}`,
     boxShadow: `${theme.shadows.md} !important`,
+  },
+
+  address: {
+    width: '50%',
+    [theme.fn.smallerThan('md')]: {
+      width: '75%',
+    },
+    [theme.fn.smallerThan('sm')]: {
+      width: '100%',
+    },
   },
 }));
 
@@ -74,7 +85,8 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
   const spoilerControlRef = useRef<HTMLButtonElement>(null);
   const [warning, setWarning] = useState(false);
 
-  const getLocation = async (): Promise<any> => new Promise((resolve) => {
+  const getLocation = async (): Promise<any> =>
+    new Promise((resolve) => {
       if (!navigator.geolocation) {
         showNotification({
           title: '😟 Unable to retrieve your location',
@@ -168,6 +180,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
       </Group>
       <Center>
         <Spoiler
+          className={classes.address}
           controlRef={spoilerControlRef}
           mt="md"
           maxHeight={0}
