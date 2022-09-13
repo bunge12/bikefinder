@@ -1,5 +1,5 @@
-import { rest } from 'msw';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { rest } from 'msw';
 import Address from './Address';
 import { apiResponse } from '../data';
 

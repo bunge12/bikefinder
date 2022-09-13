@@ -1,5 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { rest } from 'msw';
 import Shortcuts from './Shortcuts';
+import { apiResponse } from '../data';
 
 export default {
   title: 'Shortcuts',
@@ -16,4 +18,7 @@ Default.args = {
     quantity: 1,
     item: '',
   },
+};
+Default.parameters = {
+  msw: [rest.get('https://api.mapbox.com/*', (req, res, ctx) => res(ctx.json(apiResponse)))],
 };

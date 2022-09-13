@@ -58,6 +58,7 @@ export default function Address({ onSave, onClose, onRefresh, hideControls = fal
             fontSize: '1em',
           },
         }}
+        required
       />
       <Group position={!hideControls ? 'right' : 'center'} spacing="xs" mt="sm">
         {!hideControls && (

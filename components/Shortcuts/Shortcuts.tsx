@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
 import DockIcon from '@mui/icons-material/Dock';
@@ -66,6 +66,12 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
   const [quantity, setQuantity] = useState(searchQuery?.quantity);
   const [item, setItem] = useState(searchQuery?.item);
   // const [searchBy, setSearchBy] = useState('gps');
+  const spoilerControlRef = useRef<HTMLButtonElement>(null);
+
+  const handeSave = (lat: number, lng: number) => {
+    console.log('spoiler clicked from shortcuts', lat, lng);
+    spoilerControlRef.current && spoilerControlRef.current.click();
+  };
 
   const items = cards.map((card) => (
     <UnstyledButton
@@ -98,16 +104,17 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
       </Group>
       <Center>
         <Spoiler
+          controlRef={spoilerControlRef}
           mt="md"
           maxHeight={0}
           showLabel={
-            <Group spacing="xs">
+            <Group spacing="xs" position="center">
               <Text size="sm">Using your GPS location</Text>
               <IconChevronDown />
             </Group>
           }
           hideLabel={
-            <Group spacing="xs" mt="md">
+            <Group spacing="xs" position="center" mt="md">
               <Text size="sm">Close Settings</Text>
               <IconChevronUp />
             </Group>
@@ -118,7 +125,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
             },
           }}
         >
-          <Address onSave={() => {}} hideControls />
+          <Address onSave={handeSave} hideControls />
         </Spoiler>
       </Center>
     </Card>
