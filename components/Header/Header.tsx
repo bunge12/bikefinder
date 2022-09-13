@@ -1,6 +1,5 @@
-import { Button, Container, createStyles, Header, Popover, Title } from '@mantine/core';
-import React, { useState } from 'react';
-import Address from '../Address/Address';
+import { Container, createStyles, Header, Title } from '@mantine/core';
+import React from 'react';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -26,19 +25,8 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type Props = {
-  onSave: (lat: number, lng: number) => void;
-  onRefresh: () => void;
-};
-
-export default function AppHeader({ onSave, onRefresh }: Props) {
+export default function AppHeader() {
   const { classes } = useStyles();
-  const [opened, setOpened] = useState(false);
-
-  const handleSave = (lat: number, lng: number) => {
-    setOpened(false);
-    onSave(lat, lng);
-  };
 
   return (
     <Header height={60} className={classes.header}>
@@ -46,34 +34,6 @@ export default function AppHeader({ onSave, onRefresh }: Props) {
         <Title order={4} color="white">
           Bike Finder
         </Title>
-        <Popover
-          opened={opened}
-          onChange={setOpened}
-          position="bottom-end"
-          shadow="md"
-          withArrow
-          offset={9}
-          styles={(theme) => ({
-            dropdown: {
-              width: '35%',
-              [theme.fn.smallerThan('md')]: {
-                width: '50%',
-              },
-              [theme.fn.smallerThan('sm')]: {
-                width: '90%',
-              },
-            },
-          })}
-        >
-          <Popover.Target>
-            <Button variant="white" color="brandBlue" onClick={() => setOpened((o) => !o)}>
-              Edit Location
-            </Button>
-          </Popover.Target>
-          <Popover.Dropdown>
-            <Address onClose={() => setOpened(false)} onSave={handleSave} onRefresh={onRefresh} />
-          </Popover.Dropdown>
-        </Popover>
       </Container>
     </Header>
   );

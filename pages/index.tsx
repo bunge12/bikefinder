@@ -56,8 +56,6 @@ type SearchQuery = {
 export default function HomePage() {
   const { classes } = useStyles();
   const [openedSearch, setOpenedSearch] = useState(false);
-  const [lat, setLat] = useState<number>();
-  const [lng, setLng] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     stations: 5,
     quantity: 1,
@@ -67,13 +65,11 @@ export default function HomePage() {
   });
 
   const { data } = useSWR(
-    lat && lng
+    searchQuery.lat && searchQuery.lng
       ? [
           '/api/bikeshare',
           {
             ...searchQuery,
-            lat,
-            lng,
           },
         ]
       : null,
@@ -83,11 +79,6 @@ export default function HomePage() {
   const handleSearch = (query: SearchQuery) => {
     setSearchQuery(query);
     setOpenedSearch(false);
-  };
-
-  const handleSave = (newLat: number, newLng: number) => {
-    setLat(newLat);
-    setLng(newLng);
   };
 
   return (
@@ -102,7 +93,7 @@ export default function HomePage() {
             'Quickly locate the closest bike share stations. Modify your search to find the number of bikes, e-bikes, or docks you need!',
         }}
       />
-      <AppHeader onSave={handleSave} onRefresh={() => {}} />
+      <AppHeader />
       <Container>
         <Shortcuts onSearch={handleSearch} searchQuery={searchQuery} />
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
