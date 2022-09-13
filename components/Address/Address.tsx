@@ -68,6 +68,7 @@ export default function Address({
         }}
         required
         rightSection={<ClearIcon onClick={() => setValue('')} />}
+        dropdownPosition="bottom"
       />
       <Group position={!hideControls ? 'right' : 'center'} spacing="xs" mt="sm">
         {!hideControls && (
