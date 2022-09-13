@@ -13,8 +13,9 @@ import {
   Spoiler,
   Center,
 } from '@mantine/core';
-import { IconChevronDown } from '@tabler/icons';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 import QuantityInput from '../QuantityInput/QuantityInput';
+import Address from '../Address/Address';
 
 const cards = [
   { title: 'Bikes', icon: PedalBikeIcon, value: 'bikes' },
@@ -105,9 +106,19 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
               <IconChevronDown />
             </Group>
           }
-          hideLabel="Hide"
+          hideLabel={
+            <Group spacing="xs" mt="md">
+              <Text size="sm">Close Settings</Text>
+              <IconChevronUp />
+            </Group>
+          }
+          styles={{
+            control: {
+              width: '100%',
+            },
+          }}
         >
-          Settings
+          <Address onSave={() => {}} hideControls />
         </Spoiler>
       </Center>
     </Card>

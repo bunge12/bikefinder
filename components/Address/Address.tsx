@@ -77,8 +77,12 @@ export default function Address({ onSave, onClose, onRefresh, hideControls = fal
             </Button>
           </>
         )}
-        <Button onClick={handleSave} color="brandGreen">
-          Save
+        <Button
+          onClick={handleSave}
+          color="brandGreen"
+          variant={hideControls ? 'outline' : 'filled'}
+        >
+          {hideControls ? 'Use This Address' : 'Save'}
         </Button>
       </Group>
     </div>
