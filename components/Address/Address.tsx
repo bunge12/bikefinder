@@ -54,7 +54,7 @@ export default function Address({
   return (
     <div>
       <Autocomplete
-        label="Search by Address, Point of Interest, or Postal Code"
+        label="Search by Address or Point of Interest"
         placeholder="Start typing to see suggestions"
         data={suggestions}
         value={value}

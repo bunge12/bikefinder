@@ -14,6 +14,7 @@ import {
   Center,
 } from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
 import QuantityInput from '../QuantityInput/QuantityInput';
 import Address from '../Address/Address';
 
@@ -54,10 +55,12 @@ type SearchQuery = {
   stations: number;
   quantity: number;
   item: string;
+  lat: number | null;
+  lng: number | null;
 };
 type Props = {
   searchQuery: SearchQuery;
-  onSearch: (arg0: SearchQuery) => void;
+  onSearch: Function;
 };
 
 export default function Shortcuts({ searchQuery, onSearch }: Props) {
@@ -65,25 +68,75 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
   const stations = searchQuery?.stations;
   const [quantity, setQuantity] = useState(searchQuery?.quantity);
   const [item, setItem] = useState(searchQuery?.item);
+  const [lat, setLat] = useState<number | null>();
+  const [lng, setLng] = useState<number | null>();
   const [searchBy, setSearchBy] = useState('gps');
   const spoilerControlRef = useRef<HTMLButtonElement>(null);
+  const [warning, setWarning] = useState(false);
 
-  const handeSave = (lat: number, lng: number) => {
-    console.log('spoiler clicked from shortcuts', lat, lng);
+  const getLocation = async (): Promise<any> => new Promise((resolve) => {
+      if (!navigator.geolocation) {
+        showNotification({
+          title: '😟 Unable to retrieve your location',
+          message: 'Geolocation is not supported by your browser',
+          color: 'red',
+          disallowClose: true,
+          autoClose: false,
+        });
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve(position.coords);
+          },
+          () => {
+            showNotification({
+              title: '😟 Unable to retrieve your location',
+              message:
+                'Please click "Allow Location Access" when prompted by your browser and reload the page.',
+              color: 'red',
+              disallowClose: true,
+              autoClose: false,
+            });
+          }
+        );
+      }
+    });
+
+  const handeSave = (aLat: number, aLng: number) => {
+    setLat(aLat);
+    setLng(aLng);
     setSearchBy('address');
     spoilerControlRef.current && spoilerControlRef.current.click();
   };
 
   const handleGPSSwitch = () => {
+    setLat(null);
+    setLng(null);
     setSearchBy('gps');
     spoilerControlRef.current && spoilerControlRef.current.click();
+  };
+
+  const handleShowResults = async () => {
+    if (item === '') setWarning(true);
+    else {
+      if (searchBy === 'gps') {
+        const { latitude, longitude } = await getLocation();
+        onSearch({ stations, quantity, item, lat: latitude, lng: longitude });
+      }
+      if (searchBy === 'address') {
+        onSearch({ stations, quantity, item, lat, lng });
+      }
+    }
   };
 
   const items = cards.map((card) => (
     <UnstyledButton
       key={card.title}
       className={cx(classes.item, { [classes.selected]: card.value === item })}
-      onClick={() => setItem(card.value)}
+      onClick={() => {
+        setWarning(false);
+        setItem(card.value);
+      }}
     >
       <card.icon style={{ color: theme.colors.brandBlue[7], fontSize: 35 }} />
       <Text size="sm" mt={7}>
@@ -101,10 +154,15 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
       <SimpleGrid cols={3} mt="md">
         {items}
       </SimpleGrid>
+      {warning && (
+        <Text align="center" color="red" size="sm" mt="sm">
+          Please select an item above in order to search
+        </Text>
+      )}
       <Group position="center" mt="md">
         <Text>How many:</Text>
         <QuantityInput onValueChange={setQuantity} startingValue={quantity} />
-        <Button color="brandGreen" onClick={() => onSearch({ stations, quantity, item })}>
+        <Button color="brandGreen" onClick={handleShowResults}>
           Show results
         </Button>
       </Group>

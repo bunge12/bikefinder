@@ -8,9 +8,9 @@ import {
   Modal,
   Alert,
 } from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
-import { showNotification } from '@mantine/notifications';
+
 import { IconAlertCircle } from '@tabler/icons';
 import { NextSeo } from 'next-seo';
 import Station from '../components/Station/Station';
@@ -49,6 +49,8 @@ type SearchQuery = {
   stations: number;
   quantity: number;
   item: string;
+  lat: number | null;
+  lng: number | null;
 };
 
 export default function HomePage() {
@@ -59,7 +61,9 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     stations: 5,
     quantity: 1,
-    item: 'bikes',
+    item: '',
+    lat: null,
+    lng: null,
   });
 
   const { data } = useSWR(
@@ -75,39 +79,6 @@ export default function HomePage() {
       : null,
     fetcher
   );
-
-  const getLocation = () => {
-    if (!navigator.geolocation) {
-      showNotification({
-        title: '😟 Unable to retrieve your location',
-        message: 'Geolocation is not supported by your browser',
-        color: 'red',
-        disallowClose: true,
-        autoClose: false,
-      });
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
-        },
-        () => {
-          showNotification({
-            title: '😟 Unable to retrieve your location',
-            message:
-              'Please click "Allow Location Access" when prompted by your browser and reload the page.',
-            color: 'red',
-            disallowClose: true,
-            autoClose: false,
-          });
-        }
-      );
-    }
-  };
-
-  useEffect(() => {
-    getLocation();
-  }, []);
 
   const handleSearch = (query: SearchQuery) => {
     setSearchQuery(query);
@@ -131,7 +102,7 @@ export default function HomePage() {
             'Quickly locate the closest bike share stations. Modify your search to find the number of bikes, e-bikes, or docks you need!',
         }}
       />
-      <AppHeader onSave={handleSave} onRefresh={getLocation} />
+      <AppHeader onSave={handleSave} onRefresh={() => {}} />
       <Container>
         <Shortcuts onSearch={handleSearch} searchQuery={searchQuery} />
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>

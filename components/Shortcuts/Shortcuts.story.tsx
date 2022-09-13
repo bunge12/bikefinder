@@ -17,6 +17,8 @@ Default.args = {
     stations: 5,
     quantity: 1,
     item: '',
+    lat: null,
+    lng: null,
   },
 };
 Default.parameters = {
