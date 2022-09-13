@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Autocomplete, Button, Group } from '@mantine/core';
 import { IconCurrentLocation } from '@tabler/icons';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const searchResults = async (query: string) => {
   const response = await fetch(
@@ -13,8 +14,10 @@ const searchResults = async (query: string) => {
 
 type Props = {
   onSave: (lat: number, lng: number) => void;
-  onClose: () => void;
-  onRefresh: () => void;
+  onClose?: () => void;
+  onRefresh?: () => void;
+  hideControls?: boolean;
+  onGPS?: () => void;
 };
 
 type Feature = {
@@ -22,7 +25,13 @@ type Feature = {
   center: number[];
 };
 
-export default function Address({ onSave, onClose, onRefresh }: Props) {
+export default function Address({
+  onSave,
+  onClose,
+  onRefresh,
+  hideControls = false,
+  onGPS,
+}: Props) {
   const [value, setValue] = useState<string>('');
   const [debounced] = useDebouncedValue(value, 500);
   const [suggestions, setSuggestions] = useState([]);
@@ -46,7 +55,7 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
   return (
     <div>
       <Autocomplete
-        label="Address, Point of Interest, or Postal Code"
+        label="Search by Address or Point of Interest"
         placeholder="Start typing to see suggestions"
         data={suggestions}
         value={value}
@@ -57,23 +66,33 @@ export default function Address({ onSave, onClose, onRefresh }: Props) {
             fontSize: '1em',
           },
         }}
+        required
+        rightSection={<ClearIcon onClick={() => setValue('')} />}
+        dropdownPosition="bottom"
       />
-      <Group position="right" spacing="xs" mt="md">
-        <Button onClick={onClose} variant="outline">
-          Close
-        </Button>
+      <Group position={!hideControls ? 'right' : 'center'} spacing="xs" mt="sm">
+        {!hideControls && (
+          <Button onClick={onClose} variant="outline">
+            Close
+          </Button>
+        )}
         <Button
           onClick={() => {
-            onRefresh();
-            onClose();
+            onRefresh && onRefresh();
+            onClose && onClose();
+            onGPS && onGPS();
           }}
           leftIcon={<IconCurrentLocation />}
           variant="outline"
         >
-          Use geolocation
+          Use GPS
         </Button>
-        <Button onClick={handleSave} color="brandGreen">
-          Save
+        <Button
+          onClick={handleSave}
+          color="brandGreen"
+          variant={hideControls ? 'outline' : 'filled'}
+        >
+          {hideControls ? 'Use This Address' : 'Save'}
         </Button>
       </Group>
     </div>

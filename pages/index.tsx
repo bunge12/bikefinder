@@ -1,22 +1,12 @@
-import {
-  Text,
-  Skeleton,
-  Container,
-  Stack,
-  Button,
-  createStyles,
-  Modal,
-  Alert,
-} from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { Text, Skeleton, Container, Stack, createStyles, Alert } from '@mantine/core';
+import { useState } from 'react';
 import useSWR from 'swr';
-import { showNotification } from '@mantine/notifications';
 import { IconAlertCircle } from '@tabler/icons';
 import { NextSeo } from 'next-seo';
 import Station from '../components/Station/Station';
-import Search from '../components/Search/Search';
 import AppHeader from '../components/Header/Header';
 import AppFooter from '../components/Footer/Footer';
+import Shortcuts from '../components/Shortcuts/Shortcuts';
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -48,75 +38,31 @@ type SearchQuery = {
   stations: number;
   quantity: number;
   item: string;
+  lat: number | null;
+  lng: number | null;
 };
 
 export default function HomePage() {
   const { classes } = useStyles();
-  const [openedSearch, setOpenedSearch] = useState(false);
-  const [lat, setLat] = useState<number>();
-  const [lng, setLng] = useState<number>();
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     stations: 5,
     quantity: 1,
-    item: 'bikes',
+    item: '',
+    lat: null,
+    lng: null,
   });
 
   const { data } = useSWR(
-    lat && lng
+    searchQuery.lat && searchQuery.lng
       ? [
           '/api/bikeshare',
           {
             ...searchQuery,
-            lat,
-            lng,
           },
         ]
       : null,
     fetcher
   );
-
-  const getLocation = () => {
-    if (!navigator.geolocation) {
-      showNotification({
-        title: '😟 Unable to retrieve your location',
-        message: 'Geolocation is not supported by your browser',
-        color: 'red',
-        disallowClose: true,
-        autoClose: false,
-      });
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLat(position.coords.latitude);
-          setLng(position.coords.longitude);
-        },
-        () => {
-          showNotification({
-            title: '😟 Unable to retrieve your location',
-            message:
-              'Please click "Allow Location Access" when prompted by your browser and reload the page.',
-            color: 'red',
-            disallowClose: true,
-            autoClose: false,
-          });
-        }
-      );
-    }
-  };
-
-  useEffect(() => {
-    getLocation();
-  }, []);
-
-  const handleSearch = (query: SearchQuery) => {
-    setSearchQuery(query);
-    setOpenedSearch(false);
-  };
-
-  const handleSave = (newLat: number, newLng: number) => {
-    setLat(newLat);
-    setLng(newLng);
-  };
 
   return (
     <>
@@ -130,11 +76,14 @@ export default function HomePage() {
             'Quickly locate the closest bike share stations. Modify your search to find the number of bikes, e-bikes, or docks you need!',
         }}
       />
-      <AppHeader onSave={handleSave} onRefresh={getLocation} />
+      <AppHeader />
       <Container>
+        <Shortcuts onSearch={setSearchQuery} searchQuery={searchQuery} />
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
           {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
-          {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
+          {!data && searchQuery.lat && searchQuery.lng && (
+            <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />
+          )}
           {data && data.length === 0 && (
             <Alert
               className={classes.alert}
@@ -155,7 +104,7 @@ export default function HomePage() {
           {data &&
             data.length > 0 &&
             data.map((station: any, i: any) => <Station key={i} station={station} />)}
-          {!data && (
+          {!data && searchQuery.lat && searchQuery.lng && (
             <>
               <Station key={1} />
               <Station key={2} />
@@ -165,20 +114,6 @@ export default function HomePage() {
             </>
           )}
         </Stack>
-        <div className={classes.button}>
-          <Button
-            color="brandBlue"
-            variant="outline"
-            uppercase
-            mt="lg"
-            onClick={() => setOpenedSearch(true)}
-          >
-            search for a station
-          </Button>
-        </div>
-        <Modal centered opened={openedSearch} onClose={() => setOpenedSearch(false)}>
-          <Search onSearch={handleSearch} searchQuery={searchQuery} />
-        </Modal>
       </Container>
       <AppFooter />
     </>
