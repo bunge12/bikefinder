@@ -17,6 +17,7 @@ import Station from '../components/Station/Station';
 import Search from '../components/Search/Search';
 import AppHeader from '../components/Header/Header';
 import AppFooter from '../components/Footer/Footer';
+import Shortcuts from '../components/Shortcuts/Shortcuts';
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -132,6 +133,7 @@ export default function HomePage() {
       />
       <AppHeader onSave={handleSave} onRefresh={getLocation} />
       <Container>
+        <Shortcuts />
         <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
           {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
           {!data && <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />}
