@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Autocomplete, Button, Group } from '@mantine/core';
 import { IconCurrentLocation } from '@tabler/icons';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const searchResults = async (query: string) => {
   const response = await fetch(
@@ -66,6 +67,7 @@ export default function Address({
           },
         }}
         required
+        rightSection={<ClearIcon onClick={() => setValue('')} />}
       />
       <Group position={!hideControls ? 'right' : 'center'} spacing="xs" mt="sm">
         {!hideControls && (
