@@ -14,3 +14,11 @@ export const Default = Template.bind({});
 Default.parameters = {
   msw: [rest.get('https://api.mapbox.com/*', (req, res, ctx) => res(ctx.json(apiResponse)))],
 };
+
+export const NoButtons = Template.bind({});
+NoButtons.args = {
+  hideControls: true,
+};
+NoButtons.parameters = {
+  msw: [rest.get('https://api.mapbox.com/*', (req, res, ctx) => res(ctx.json(apiResponse)))],
+};
