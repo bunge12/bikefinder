@@ -94,9 +94,8 @@ export default function HomePage() {
                 message: { textAlign: 'left' },
               }}
             >
-              Your search query returned no results. Please click &quot;Search for a station&quot;
-              button below and adjust your search parameters. Hope to get you biking as soon as
-              possible! 🚲
+              Your search query returned no results. Please adjust your search parameters above and
+              click Show Results. Hope to get you biking as soon as possible! 🚲
             </Alert>
           )}
         </Text>
