@@ -60,13 +60,13 @@ const findNearestStations = (
     .sort((a, b) => a.distance - b.distance)
     .filter((station) => {
       if (filters.item === 'bikes') {
-        return station.num_bikes_available_types.mechanical > filters.quantity;
+        return station.num_bikes_available_types.mechanical >= filters.quantity;
       }
       if (filters.item === 'e-bikes') {
-        return station.num_bikes_available_types.ebike > filters.quantity;
+        return station.num_bikes_available_types.ebike >= filters.quantity;
       }
       if (filters.item === 'docks') {
-        return station.num_docks_available > filters.quantity;
+        return station.num_docks_available >= filters.quantity;
       }
       return station;
     })
