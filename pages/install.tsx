@@ -54,7 +54,7 @@ export default function InstallPage() {
           <List type="ordered" withPadding spacing="sm" pt="md">
             <List.Item>
               Open app in Chrome (
-              <CopyButton value="https://bikefinder.app">
+              <CopyButton value="https://bikefinder.app" timeout={2000}>
                 {({ copied, copy }) => (
                   <UnstyledButton onClick={copy}>
                     {copied ? 'link copied ✅' : 'copy link'}
@@ -82,7 +82,7 @@ export default function InstallPage() {
           <List type="ordered" withPadding spacing="sm" pt="md">
             <List.Item>
               Open app in Safari (
-              <CopyButton value="https://bikefinder.app">
+              <CopyButton value="https://bikefinder.app" timeout={2000}>
                 {({ copied, copy }) => (
                   <UnstyledButton onClick={copy}>
                     {copied ? 'link copied ✅' : 'copy link'}
