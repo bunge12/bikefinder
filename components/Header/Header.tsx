@@ -1,4 +1,5 @@
-import { Container, createStyles, Header, Title } from '@mantine/core';
+import { Button, Container, createStyles, Header, Title } from '@mantine/core';
+import Link from 'next/link';
 import React from 'react';
 
 const useStyles = createStyles((theme) => ({
@@ -32,8 +33,13 @@ export default function AppHeader() {
     <Header height={60} className={classes.header}>
       <Container className={classes.container}>
         <Title order={4} color="white">
-          Bike Finder
+          BikeFinder
         </Title>
+        <Link href="/install" passHref>
+          <Button component="a" variant="light">
+            Install App
+          </Button>
+        </Link>
       </Container>
     </Header>
   );
