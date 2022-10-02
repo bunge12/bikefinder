@@ -1,5 +1,6 @@
-import { Button, Container, createStyles, Header, Title } from '@mantine/core';
+import { Button, Container, createStyles, Header, Text } from '@mantine/core';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const useStyles = createStyles((theme) => ({
@@ -28,18 +29,23 @@ const useStyles = createStyles((theme) => ({
 
 export default function AppHeader() {
   const { classes } = useStyles();
+  const router = useRouter();
 
   return (
     <Header height={60} className={classes.header}>
       <Container className={classes.container}>
-        <Title order={4} color="white">
-          BikeFinder
-        </Title>
-        <Link href="/install" passHref>
-          <Button component="a" variant="light">
-            Install App
-          </Button>
+        <Link href="/" passHref>
+          <Text component="a" color="white" weight="bold" size="lg">
+            BikeFinder
+          </Text>
         </Link>
+        {router.pathname !== '/install' && (
+          <Link href="/install" passHref>
+            <Button component="a" variant="light">
+              Install App
+            </Button>
+          </Link>
+        )}
       </Container>
     </Header>
   );

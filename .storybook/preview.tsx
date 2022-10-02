@@ -5,11 +5,15 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { theme } from '../components/theme';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { addDecorator } from '@storybook/react';
+import { RouterContext } from 'next/dist/shared/lib/router-context'; // next 12
 
 export const parameters = {
   layout: 'fullscreen',
   viewport: {
     defaultViewport: 'mobile2',
+  },
+  nextRouter: {
+    Provider: RouterContext.Provider,
   },
 };
 

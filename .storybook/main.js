@@ -4,6 +4,7 @@ module.exports = {
     'storybook-dark-mode',
     '@storybook/addon-actions',
     '@storybook/addon-viewport',
+    'storybook-addon-next-router',
     {
       name: 'storybook-addon-turbo-build',
       options: { optimizationLevel: 2 },
