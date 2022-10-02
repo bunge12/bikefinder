@@ -16,11 +16,27 @@ export default function InstallPage() {
         }}
       />
       <AppHeader />
-      <Container>
+      <Container pt="md">
         <Title order={5} align="center">
           How to install BikeFinder on your device?
         </Title>
-        <List type="ordered" withPadding spacing="sm">
+        <List type="ordered" withPadding spacing="sm" pt="md">
+          <List.Item>Open https://bikefinder.app in Chrome</List.Item>
+          <List.Item>
+            Click &quot;Install/Add to Home Screen&quot; at the bottom of the page
+            <Image src="/screens/android-1.png" />
+          </List.Item>
+          <List.Item>
+            Alternatively, click on the menu icon and click &quot;Install App&quot;
+            <Image src="/screens/android-2.png" />
+          </List.Item>
+          <List.Item>
+            Confirm installation
+            <Image src="/screens/android-3.png" />
+          </List.Item>
+          <List.Item>✅ The app will be added to your home screen</List.Item>
+        </List>
+        <List type="ordered" withPadding spacing="sm" pt="md">
           <List.Item>Open https://bikefinder.app in Safari</List.Item>
           <List.Item>
             Click on &quot;Share&quot; icon
