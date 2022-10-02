@@ -1,11 +1,27 @@
-import { Container, List, Title, Image, SegmentedControl, Center } from '@mantine/core';
+import {
+  Container,
+  List,
+  Title,
+  Image,
+  SegmentedControl,
+  Center,
+  CopyButton,
+  UnstyledButton,
+} from '@mantine/core';
+import { useOs } from '@mantine/hooks';
 import { NextSeo } from 'next-seo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppFooter from '../components/Footer/Footer';
 import AppHeader from '../components/Header/Header';
 
 export default function InstallPage() {
   const [platform, setPlatform] = useState('ios');
+
+  const os = useOs();
+
+  useEffect(() => {
+    if (os === 'android' || os === 'ios') setPlatform(os);
+  }, [os]);
 
   return (
     <>
@@ -36,7 +52,17 @@ export default function InstallPage() {
         </Center>
         {platform === 'android' && (
           <List type="ordered" withPadding spacing="sm" pt="md">
-            <List.Item>Open https://bikefinder.app in Chrome</List.Item>
+            <List.Item>
+              Open app in Chrome (
+              <CopyButton value="https://bikefinder.app">
+                {({ copied, copy }) => (
+                  <UnstyledButton onClick={copy}>
+                    {copied ? 'link copied ✅' : 'copy link'}
+                  </UnstyledButton>
+                )}
+              </CopyButton>
+              )
+            </List.Item>
             <List.Item>
               Click &quot;Install/Add to Home Screen&quot; at the bottom of the page
               <Image src="/screens/android-1.png" />
@@ -54,7 +80,17 @@ export default function InstallPage() {
         )}
         {platform === 'ios' && (
           <List type="ordered" withPadding spacing="sm" pt="md">
-            <List.Item>Open https://bikefinder.app in Safari</List.Item>
+            <List.Item>
+              Open app in Safari (
+              <CopyButton value="https://bikefinder.app">
+                {({ copied, copy }) => (
+                  <UnstyledButton onClick={copy}>
+                    {copied ? 'link copied ✅' : 'copy link'}
+                  </UnstyledButton>
+                )}
+              </CopyButton>
+              )
+            </List.Item>
             <List.Item>
               Click on &quot;Share&quot; icon
               <Image src="/screens/ios-1.PNG" />
