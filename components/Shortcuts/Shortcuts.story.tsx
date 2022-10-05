@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { rest } from 'msw';
+import { Container } from '@mantine/core';
 import Shortcuts from './Shortcuts';
 import { apiResponse } from '../data';
 
@@ -7,6 +8,13 @@ export default {
   title: 'Shortcuts',
   component: Shortcuts,
   argTypes: { onSearch: { action: 'clicked' } },
+  decorators: [
+    (Story) => (
+      <Container>
+        <Story />
+      </Container>
+    ),
+  ],
 } as ComponentMeta<typeof Shortcuts>;
 
 const Template: ComponentStory<typeof Shortcuts> = (args) => <Shortcuts {...args} />;
