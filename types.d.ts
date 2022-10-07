@@ -1,4 +1,4 @@
-type Station = {
+type TStation = {
   name: string;
   distance: number;
   num_bikes_available_types: {

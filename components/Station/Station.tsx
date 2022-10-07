@@ -6,7 +6,7 @@ import DockIcon from '@mui/icons-material/Dock';
 import DirectionsIcon from '@mui/icons-material/Directions';
 
 type Props = {
-  station?: Station;
+  station?: TStation;
 };
 
 const formatDistance = (distance: number): string => {

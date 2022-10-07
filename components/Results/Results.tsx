@@ -1,10 +1,20 @@
+import { SimpleGrid, Stack } from '@mantine/core';
 import React from 'react';
+import Station from '../Station/Station';
 
 type Props = {
-  list: Station[];
+  list?: TStation[];
 };
 
 export default function Results({ list }: Props) {
-  console.log(list);
-  return <div>Results</div>;
+  return (
+    <SimpleGrid cols={2}>
+      <div style={{ backgroundColor: 'red' }}>map</div>
+      <Stack spacing="xs">
+        {list?.map((each: TStation, i: number) => (
+          <Station key={i} station={each} />
+        ))}
+      </Stack>
+    </SimpleGrid>
+  );
 }

@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Container } from '@mantine/core';
 import Results from './Results';
+import { stationsResponse } from '../data';
 
 export default {
   title: 'Results',
@@ -17,4 +18,4 @@ export default {
 const Template: ComponentStory<typeof Results> = (args) => <Results {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = { list: stationsResponse };
