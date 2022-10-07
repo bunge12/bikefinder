@@ -1,7 +1,8 @@
 import { Center, MediaQuery, SegmentedControl, Group, Stack, Paper } from '@mantine/core';
 import React, { useState } from 'react';
-import Map from 'react-map-gl';
+import Map, { Marker } from 'react-map-gl';
 import Station from '../Station/Station';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 type Props = {
   list?: TStation[];
@@ -45,7 +46,9 @@ export default function Results({ list, coordinates }: Props) {
               mapStyle="mapbox://styles/mapbox/streets-v11"
               mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
               attributionControl={false}
-            />
+            >
+              <Marker longitude={coordinates.lng} latitude={coordinates.lat} />
+            </Map>
           </Paper>
 
           <Stack spacing="xs" justify="space-between">
