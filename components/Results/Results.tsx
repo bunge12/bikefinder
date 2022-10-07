@@ -8,7 +8,7 @@ type Props = {
 
 export default function Results({ list }: Props) {
   return (
-    <SimpleGrid cols={2}>
+    <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'md', cols: 1 }]}>
       <div style={{ backgroundColor: 'red' }}>map</div>
       <Stack spacing="xs">
         {list?.map((each: TStation, i: number) => (
