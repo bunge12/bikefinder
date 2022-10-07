@@ -6,17 +6,7 @@ import DockIcon from '@mui/icons-material/Dock';
 import DirectionsIcon from '@mui/icons-material/Directions';
 
 type Props = {
-  station?: {
-    name: string;
-    distance: number;
-    num_bikes_available_types: {
-      mechanical: number;
-      ebike: number;
-    };
-    num_docks_available: number;
-    lat: number;
-    lon: number;
-  };
+  station?: Station;
 };
 
 const formatDistance = (distance: number): string => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-  list: Result[];
+  list: Station[];
 };
 
 export default function Results({ list }: Props) {
