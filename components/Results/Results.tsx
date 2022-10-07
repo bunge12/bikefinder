@@ -49,7 +49,7 @@ export default function Results({ list }: Props) {
       )}
       {display === 'map' && (
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-          <div>map</div>
+          <div style={{ backgroundColor: 'red', height: 500 }}>map</div>
         </MediaQuery>
       )}
     </>
