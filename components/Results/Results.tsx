@@ -1,5 +1,6 @@
-import { Center, MediaQuery, SegmentedControl, SimpleGrid, Stack } from '@mantine/core';
+import { Center, MediaQuery, SegmentedControl, Group, Stack } from '@mantine/core';
 import React, { useState } from 'react';
+import Map from 'react-map-gl';
 import Station from '../Station/Station';
 
 type Props = {
@@ -11,6 +12,7 @@ export default function Results({ list }: Props) {
 
   return (
     <>
+      {/* controls only visible in mobile */}
       <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
         <Center>
           <SegmentedControl
@@ -27,14 +29,26 @@ export default function Results({ list }: Props) {
 
       {/* full-screen display */}
       <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-          <div style={{ backgroundColor: 'red' }}>map</div>
-          <Stack spacing="xs">
+        <Group position="center" grow>
+          <Map
+            initialViewState={{
+              longitude: -122.4,
+              latitude: 37.8,
+              zoom: 14,
+            }}
+            style={{ width: '100%', height: 500 }}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+            // customAttribution="bn"
+            attributionControl={false}
+          />
+
+          <Stack spacing="xs" justify="space-between">
             {list?.map((each: TStation, i: number) => (
               <Station key={i} station={each} />
             ))}
           </Stack>
-        </SimpleGrid>
+        </Group>
       </MediaQuery>
 
       {/* mobile display */}
