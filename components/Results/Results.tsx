@@ -1,7 +1,10 @@
 import React from 'react';
 
-// type Props = {};
+type Props = {
+  list: Result[];
+};
 
-export default function Results() {
+export default function Results({ list }: Props) {
+  console.log(list);
   return <div>Results</div>;
 }

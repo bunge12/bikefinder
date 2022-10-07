@@ -14,15 +14,7 @@ export default {
   ],
 } as ComponentMeta<typeof Results>;
 
-const Template: ComponentStory<typeof Results> = () => <Results />;
+const Template: ComponentStory<typeof Results> = (args) => <Results {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {
-  searchQuery: {
-    stations: 5,
-    quantity: 1,
-    item: '',
-    lat: null,
-    lng: null,
-  },
-};
+Default.args = {};
