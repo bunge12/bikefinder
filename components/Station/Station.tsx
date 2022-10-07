@@ -18,7 +18,7 @@ const formatDistance = (distance: number): string => {
 
 export default function Station({ station }: Props) {
   return (
-    <Card withBorder>
+    <Card withBorder p="xs">
       <Group>
         {station ? (
           <>
@@ -55,14 +55,14 @@ export default function Station({ station }: Props) {
         {station && (
           <ActionIcon
             color="brandGreen"
-            size="xl"
+            size="lg"
             style={{ marginLeft: 'auto' }}
             component="a"
             aria-label="Navigate to station with Google Maps"
             target="_blank"
             href={`https://www.google.ca/maps/dir//${station.lat},${station.lon}/`}
           >
-            <DirectionsIcon sx={{ fontSize: 40 }} />
+            <DirectionsIcon sx={{ fontSize: 35 }} />
           </ActionIcon>
         )}
       </Group>
