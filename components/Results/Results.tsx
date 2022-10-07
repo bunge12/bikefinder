@@ -1,13 +1,17 @@
-import { Center, MediaQuery, SegmentedControl, Group, Stack } from '@mantine/core';
+import { Center, MediaQuery, SegmentedControl, Group, Stack, Paper } from '@mantine/core';
 import React, { useState } from 'react';
 import Map from 'react-map-gl';
 import Station from '../Station/Station';
 
 type Props = {
   list?: TStation[];
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
 };
 
-export default function Results({ list }: Props) {
+export default function Results({ list, coordinates }: Props) {
   const [display, setDisplay] = useState<string>('list');
 
   return (
@@ -30,18 +34,19 @@ export default function Results({ list }: Props) {
       {/* full-screen display */}
       <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
         <Group position="center" grow>
-          <Map
-            initialViewState={{
-              longitude: -122.4,
-              latitude: 37.8,
-              zoom: 14,
-            }}
-            style={{ width: '100%', height: 500 }}
-            mapStyle="mapbox://styles/mapbox/streets-v9"
-            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-            // customAttribution="bn"
-            attributionControl={false}
-          />
+          <Paper withBorder style={{ overflow: 'hidden' }}>
+            <Map
+              initialViewState={{
+                longitude: coordinates.lng,
+                latitude: coordinates.lat,
+                zoom: 14,
+              }}
+              style={{ width: '100%', height: 500 }}
+              mapStyle="mapbox://styles/mapbox/streets-v11"
+              mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+              attributionControl={false}
+            />
+          </Paper>
 
           <Stack spacing="xs" justify="space-between">
             {list?.map((each: TStation, i: number) => (
