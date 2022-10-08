@@ -9,6 +9,7 @@ import {
   Badge,
 } from '@mantine/core';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
+import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
 import React, { useState } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import Station from '../Station/Station';
@@ -26,7 +27,15 @@ export default function Results({ list, query }: Props) {
     <Marker key={index} longitude={each.lon} latitude={each.lat}>
       <Badge
         size="lg"
-        leftSection={<PedalBikeIcon />}
+        leftSection={
+          query.item === 'bikes' ? (
+            <PedalBikeIcon />
+          ) : query.item === 'e-bikes' ? (
+            <ElectricBikeIcon />
+          ) : (
+            ''
+          )
+        }
         styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
       >
         {each.num_bikes_available_types.mechanical}
