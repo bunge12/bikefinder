@@ -15,6 +15,10 @@ type Props = {
 export default function Results({ list, coordinates }: Props) {
   const [display, setDisplay] = useState<string>('list');
 
+  const markers = list?.map((each, index) => (
+    <Marker key={index} longitude={each.lon} latitude={each.lat} />
+  ));
+
   return (
     <>
       {/* controls only visible in mobile */}
@@ -48,13 +52,14 @@ export default function Results({ list, coordinates }: Props) {
               attributionControl={false}
             >
               <Marker longitude={coordinates.lng} latitude={coordinates.lat}>
-                <Image src="/icons/current_location.svg" width={20} />
+                <Image src="/icons/current_location.svg" width={30} />
               </Marker>
+              {markers}
             </Map>
           </Paper>
 
           <Stack spacing="xs" justify="space-between">
-            {list?.map((each: TStation, i: number) => (
+            {list?.map((each, i) => (
               <Station key={i} station={each} />
             ))}
           </Stack>
