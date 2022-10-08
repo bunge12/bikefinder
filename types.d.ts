@@ -9,3 +9,11 @@ type TStation = {
   lat: number;
   lon: number;
 };
+
+type TSearchQuery = {
+  stations: number;
+  quantity: number;
+  item: string;
+  lat: number;
+  lng: number;
+};

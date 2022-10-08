@@ -18,4 +18,13 @@ export default {
 const Template: ComponentStory<typeof Results> = (args) => <Results {...args} />;
 
 export const Default = Template.bind({});
-Default.args = { list: stationsResponse, coordinates: { lat: 43.66235, lng: -79.38143 } };
+Default.args = {
+  list: stationsResponse,
+  query: {
+    stations: 5,
+    quantity: 1,
+    item: 'e-bikes',
+    lat: 43.66235,
+    lng: -79.38143,
+  },
+};
