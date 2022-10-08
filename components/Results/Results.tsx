@@ -10,6 +10,7 @@ import {
 } from '@mantine/core';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
+import DockIcon from '@mui/icons-material/Dock';
 import React, { useState } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import Station from '../Station/Station';
@@ -20,6 +21,18 @@ type Props = {
   query: TSearchQuery;
 };
 
+const returnIcon = (type: TSearchQuery['item']) => {
+  if (type === 'bikes') return <PedalBikeIcon />;
+  if (type === 'e-bikes') return <ElectricBikeIcon />;
+  return <DockIcon />;
+};
+
+const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
+  if (type === 'bikes') return station.num_bikes_available_types.mechanical;
+  if (type === 'e-bikes') return station.num_bikes_available_types.ebike;
+  return station.num_docks_available;
+};
+
 export default function Results({ list, query }: Props) {
   const [display, setDisplay] = useState<string>('list');
 
@@ -27,18 +40,10 @@ export default function Results({ list, query }: Props) {
     <Marker key={index} longitude={each.lon} latitude={each.lat}>
       <Badge
         size="lg"
-        leftSection={
-          query.item === 'bikes' ? (
-            <PedalBikeIcon />
-          ) : query.item === 'e-bikes' ? (
-            <ElectricBikeIcon />
-          ) : (
-            ''
-          )
-        }
+        leftSection={returnIcon(query.item)}
         styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
       >
-        {each.num_bikes_available_types.mechanical}
+        {returnNumber(query.item, each)}
       </Badge>
     </Marker>
   ));
