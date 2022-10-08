@@ -8,6 +8,7 @@ import {
   Image,
   Badge,
   ActionIcon,
+  Skeleton,
 } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
@@ -68,7 +69,7 @@ export default function Results({ list, query, loading = false }: Props) {
   const map = (
     <Paper withBorder style={{ overflow: 'hidden' }}>
       {loading ? (
-        'placeholder'
+        <Skeleton height={500} />
       ) : (
         <Map
           initialViewState={{
