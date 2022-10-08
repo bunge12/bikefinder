@@ -26,7 +26,7 @@ export default function Station({ station }: Props) {
             <Text size="sm">{formatDistance(station.distance)} away</Text>
           </>
         ) : (
-          <Skeleton width="100%" height="2rem" style={{ marginBottom: 10 }} />
+          <Skeleton width="100%" height="1.5rem" style={{ marginBottom: 8 }} />
         )}
       </Group>
       <Space h="sm" />
