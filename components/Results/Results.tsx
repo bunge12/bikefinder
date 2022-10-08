@@ -32,12 +32,14 @@ const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
 
 type Props = {
   list?: TStation[];
-  query: TSearchQuery;
+  query?: TSearchQuery;
+  loading?: boolean;
 };
 
-export default function Results({ list, query }: Props) {
+export default function Results({ list, query, loading = false }: Props) {
   const [display, setDisplay] = useState<string>('list');
   const [popup, setPopup] = useState<TStation | null>();
+  console.log(loading);
 
   const markers = list?.map((each, index) => (
     <Marker
@@ -52,10 +54,10 @@ export default function Results({ list, query }: Props) {
       <Badge
         size="md"
         variant="filled"
-        leftSection={returnIcon(query.item)}
+        leftSection={query && returnIcon(query.item)}
         styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
       >
-        {returnNumber(query.item, each)}
+        {query && returnNumber(query.item, each)}
       </Badge>
     </Marker>
   ));
@@ -83,8 +85,8 @@ export default function Results({ list, query }: Props) {
           <Paper withBorder style={{ overflow: 'hidden' }}>
             <Map
               initialViewState={{
-                longitude: query.lng,
-                latitude: query.lat,
+                longitude: query?.lng,
+                latitude: query?.lat,
                 zoom: 15,
               }}
               style={{ width: '100%', height: 500 }}
@@ -92,7 +94,7 @@ export default function Results({ list, query }: Props) {
               mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
               attributionControl={false}
             >
-              <Marker longitude={query.lng} latitude={query.lat}>
+              <Marker longitude={query?.lng} latitude={query?.lat}>
                 <Image src="/icons/current_location.svg" width={30} />
               </Marker>
 
@@ -145,8 +147,8 @@ export default function Results({ list, query }: Props) {
           <Paper withBorder style={{ overflow: 'hidden' }}>
             <Map
               initialViewState={{
-                longitude: query.lng,
-                latitude: query.lat,
+                longitude: query?.lng,
+                latitude: query?.lat,
                 zoom: 15,
               }}
               style={{ width: '100%', height: 500 }}
@@ -154,7 +156,7 @@ export default function Results({ list, query }: Props) {
               mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
               attributionControl={false}
             >
-              <Marker longitude={query.lng} latitude={query.lat}>
+              <Marker longitude={query?.lng} latitude={query?.lat}>
                 <Image src="/icons/current_location.svg" width={30} />
               </Marker>
 

@@ -50,3 +50,7 @@ Docks.args = {
     lng: -79.38143,
   },
 };
+export const Loading = Template.bind({});
+Loading.args = {
+  loading: true,
+};
