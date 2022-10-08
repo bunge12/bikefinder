@@ -12,14 +12,9 @@ import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
 import DockIcon from '@mui/icons-material/Dock';
 import React, { useState } from 'react';
-import Map, { Marker } from 'react-map-gl';
+import Map, { Marker, Popup } from 'react-map-gl';
 import Station from '../Station/Station';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
-type Props = {
-  list?: TStation[];
-  query: TSearchQuery;
-};
 
 const returnIcon = (type: TSearchQuery['item']) => {
   if (type === 'bikes') return <PedalBikeIcon />;
@@ -33,11 +28,25 @@ const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
   return station.num_docks_available;
 };
 
+type Props = {
+  list?: TStation[];
+  query: TSearchQuery;
+};
+
 export default function Results({ list, query }: Props) {
   const [display, setDisplay] = useState<string>('list');
+  const [popup, setPopup] = useState<TStation | null>();
 
   const markers = list?.map((each, index) => (
-    <Marker key={index} longitude={each.lon} latitude={each.lat}>
+    <Marker
+      key={index}
+      longitude={each.lon}
+      latitude={each.lat}
+      onClick={(e) => {
+        e.originalEvent.stopPropagation();
+        setPopup(each);
+      }}
+    >
       <Badge
         size="lg"
         leftSection={returnIcon(query.item)}
@@ -84,6 +93,17 @@ export default function Results({ list, query }: Props) {
                 <Image src="/icons/current_location.svg" width={30} />
               </Marker>
               {markers}
+              {popup && (
+                <Popup
+                  anchor="bottom"
+                  longitude={popup.lon}
+                  latitude={popup.lat}
+                  onClose={() => setPopup(null)}
+                  offset={15}
+                >
+                  <div>info</div>
+                </Popup>
+              )}
             </Map>
           </Paper>
 
