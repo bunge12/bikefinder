@@ -141,7 +141,47 @@ export default function Results({ list, query }: Props) {
       )}
       {display === 'map' && (
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-          <div style={{ backgroundColor: 'red', height: 500 }}>map</div>
+          <Paper withBorder style={{ overflow: 'hidden' }}>
+            <Map
+              initialViewState={{
+                longitude: query.lng,
+                latitude: query.lat,
+                zoom: 15,
+              }}
+              style={{ width: '100%', height: 500 }}
+              mapStyle="mapbox://styles/mapbox/streets-v11"
+              mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+              attributionControl={false}
+            >
+              <Marker longitude={query.lng} latitude={query.lat}>
+                <Image src="/icons/current_location.svg" width={30} />
+              </Marker>
+
+              {markers}
+              {popup && (
+                <Popup
+                  anchor="bottom"
+                  longitude={popup.lon}
+                  latitude={popup.lat}
+                  onClose={() => setPopup(null)}
+                  offset={15}
+                  closeButton={false}
+                >
+                  <ActionIcon
+                    color="brandGreen"
+                    size="md"
+                    style={{ marginLeft: 'auto' }}
+                    component="a"
+                    aria-label="Navigate to station with Google Maps"
+                    target="_blank"
+                    href={`https://www.google.ca/maps/dir//${popup.lat},${popup.lon}/`}
+                  >
+                    <DirectionsIcon sx={{ fontSize: 25 }} />
+                  </ActionIcon>
+                </Popup>
+              )}
+            </Map>
+          </Paper>
         </MediaQuery>
       )}
     </>
