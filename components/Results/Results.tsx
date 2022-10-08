@@ -7,9 +7,11 @@ import {
   Paper,
   Image,
   Badge,
+  ActionIcon,
 } from '@mantine/core';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
+import DirectionsIcon from '@mui/icons-material/Directions';
 import DockIcon from '@mui/icons-material/Dock';
 import React, { useState } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
@@ -17,9 +19,9 @@ import Station from '../Station/Station';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const returnIcon = (type: TSearchQuery['item']) => {
-  if (type === 'bikes') return <PedalBikeIcon />;
-  if (type === 'e-bikes') return <ElectricBikeIcon />;
-  return <DockIcon />;
+  if (type === 'bikes') return <PedalBikeIcon fontSize="small" />;
+  if (type === 'e-bikes') return <ElectricBikeIcon fontSize="small" />;
+  return <DockIcon fontSize="small" />;
 };
 
 const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
@@ -48,7 +50,7 @@ export default function Results({ list, query }: Props) {
       }}
     >
       <Badge
-        size="lg"
+        size="md"
         leftSection={returnIcon(query.item)}
         styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
       >
@@ -92,6 +94,7 @@ export default function Results({ list, query }: Props) {
               <Marker longitude={query.lng} latitude={query.lat}>
                 <Image src="/icons/current_location.svg" width={30} />
               </Marker>
+
               {markers}
               {popup && (
                 <Popup
@@ -100,8 +103,19 @@ export default function Results({ list, query }: Props) {
                   latitude={popup.lat}
                   onClose={() => setPopup(null)}
                   offset={15}
+                  closeButton={false}
                 >
-                  <div>info</div>
+                  <ActionIcon
+                    color="brandGreen"
+                    size="md"
+                    style={{ marginLeft: 'auto' }}
+                    component="a"
+                    aria-label="Navigate to station with Google Maps"
+                    target="_blank"
+                    href={`https://www.google.ca/maps/dir//${popup.lat},${popup.lon}/`}
+                  >
+                    <DirectionsIcon sx={{ fontSize: 25 }} />
+                  </ActionIcon>
                 </Popup>
               )}
             </Map>
