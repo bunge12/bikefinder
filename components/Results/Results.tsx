@@ -1,4 +1,4 @@
-import { Center, MediaQuery, SegmentedControl, Group, Stack, Paper } from '@mantine/core';
+import { Center, MediaQuery, SegmentedControl, Group, Stack, Paper, Image } from '@mantine/core';
 import React, { useState } from 'react';
 import Map, { Marker } from 'react-map-gl';
 import Station from '../Station/Station';
@@ -47,7 +47,9 @@ export default function Results({ list, coordinates }: Props) {
               mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
               attributionControl={false}
             >
-              <Marker longitude={coordinates.lng} latitude={coordinates.lat} />
+              <Marker longitude={coordinates.lng} latitude={coordinates.lat}>
+                <Image src="/icons/current_location.svg" width={20} />
+              </Marker>
             </Map>
           </Paper>
 
