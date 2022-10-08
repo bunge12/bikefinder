@@ -24,6 +24,11 @@ const useStyles = createStyles((theme) => ({
       width: '100%',
     },
   },
+  mapPlaceholder: {
+    [theme.fn.smallerThan('sm')]: {
+      display: 'none',
+    },
+  },
 }));
 
 const fetcher = async (url: string, query: object) => {
@@ -87,21 +92,8 @@ export default function HomePage() {
           </Alert>
         )}
 
-        {data && <Results list={data} query={searchQuery} />}
-        {/* <Stack spacing="xs">
-          {data &&
-            data.length > 0 &&
-            data.map((station: any, i: any) => <Station key={i} station={station} />)}
-          {!data && searchQuery.lat && searchQuery.lng && (
-            <>
-              <Station key={1} />
-              <Station key={2} />
-              <Station key={3} />
-              <Station key={4} />
-              <Station key={5} />
-            </>
-          )}
-        </Stack> */}
+        {data && data.length > 0 && <Results list={data} query={searchQuery} />}
+        {!data && searchQuery.lat !== 0 && searchQuery.lng !== 0 && 'Loading...'}
       </Container>
       <AppFooter />
     </>

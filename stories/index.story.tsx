@@ -15,3 +15,7 @@ Default.parameters = {
     rest.post('api/bikeshare', (req, res, ctx) => res(ctx.delay(2000), ctx.json(stationsResponse))),
   ],
 };
+export const NoResults = Template.bind({});
+NoResults.parameters = {
+  msw: [rest.post('api/bikeshare', (req, res, ctx) => res(ctx.delay(2000), ctx.json([])))],
+};
