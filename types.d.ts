@@ -13,7 +13,7 @@ type TStation = {
 type TSearchQuery = {
   stations: number;
   quantity: number;
-  item: string;
+  item: 'bikes' | 'e-bikes' | 'docks';
   lat: number;
   lng: number;
 };
