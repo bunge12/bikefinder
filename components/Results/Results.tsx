@@ -2,33 +2,35 @@ import {
   Center,
   MediaQuery,
   SegmentedControl,
-  Group,
-  Stack,
-  Paper,
-  Image,
-  Badge,
-  ActionIcon,
+  // Group,
+  // Stack,
+  // Paper,
+  // Image,
+  // Badge,
+  // ActionIcon,
 } from '@mantine/core';
-import PedalBikeIcon from '@mui/icons-material/PedalBike';
-import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
-import DirectionsIcon from '@mui/icons-material/Directions';
-import DockIcon from '@mui/icons-material/Dock';
-import React, { useState } from 'react';
-import Map, { Marker, Popup } from 'react-map-gl';
-import Station from '../Station/Station';
+// import PedalBikeIcon from '@mui/icons-material/PedalBike';
+// import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
+// import DirectionsIcon from '@mui/icons-material/Directions';
+// import DockIcon from '@mui/icons-material/Dock';
+import React, { useEffect, useState } from 'react';
+// import Map, { Marker, Popup } from 'react-map-gl';
+// import { Marker } from 'react-map-gl';
+// import Station from '../Station/Station';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { useViewportSize } from '@mantine/hooks';
 
-const returnIcon = (type: TSearchQuery['item']) => {
-  if (type === 'bikes') return <PedalBikeIcon fontSize="small" />;
-  if (type === 'e-bikes') return <ElectricBikeIcon fontSize="small" />;
-  return <DockIcon fontSize="small" />;
-};
+// const returnIcon = (type: TSearchQuery['item']) => {
+//   if (type === 'bikes') return <PedalBikeIcon fontSize="small" />;
+//   if (type === 'e-bikes') return <ElectricBikeIcon fontSize="small" />;
+//   return <DockIcon fontSize="small" />;
+// };
 
-const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
-  if (type === 'bikes') return station.num_bikes_available_types.mechanical;
-  if (type === 'e-bikes') return station.num_bikes_available_types.ebike;
-  return station.num_docks_available;
-};
+// const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
+//   if (type === 'bikes') return station.num_bikes_available_types.mechanical;
+//   if (type === 'e-bikes') return station.num_bikes_available_types.ebike;
+//   return station.num_docks_available;
+// };
 
 type Props = {
   list?: TStation[];
@@ -38,29 +40,34 @@ type Props = {
 
 export default function Results({ list, query, loading = false }: Props) {
   const [display, setDisplay] = useState<string>('list');
-  const [popup, setPopup] = useState<TStation | null>();
-  console.log(loading);
+  // const [popup, setPopup] = useState<TStation | null>();
+  const { width } = useViewportSize();
+  const [mode, setMode] = useState('full');
+  useEffect(() => {
+    width <= 800 && setMode('mobile');
+  }, [width]);
+  console.log(loading, mode, list, query);
 
-  const markers = list?.map((each, index) => (
-    <Marker
-      key={index}
-      longitude={each.lon}
-      latitude={each.lat}
-      onClick={(e) => {
-        e.originalEvent.stopPropagation();
-        setPopup(each);
-      }}
-    >
-      <Badge
-        size="md"
-        variant="filled"
-        leftSection={query && returnIcon(query.item)}
-        styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
-      >
-        {query && returnNumber(query.item, each)}
-      </Badge>
-    </Marker>
-  ));
+  // const markers = list?.map((each, index) => (
+  //   <Marker
+  //     key={index}
+  //     longitude={each.lon}
+  //     latitude={each.lat}
+  //     onClick={(e) => {
+  //       e.originalEvent.stopPropagation();
+  //       setPopup(each);
+  //     }}
+  //   >
+  //     <Badge
+  //       size="md"
+  //       variant="filled"
+  //       leftSection={query && returnIcon(query.item)}
+  //       styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
+  //     >
+  //       {query && returnNumber(query.item, each)}
+  //     </Badge>
+  //   </Marker>
+  // ));
 
   return (
     <>
@@ -80,7 +87,7 @@ export default function Results({ list, query, loading = false }: Props) {
       </MediaQuery>
 
       {/* full-screen display */}
-      <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+      {/* <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
         <Group position="center" grow>
           <Paper withBorder style={{ overflow: 'hidden' }}>
             <Map
@@ -130,10 +137,10 @@ export default function Results({ list, query, loading = false }: Props) {
             ))}
           </Stack>
         </Group>
-      </MediaQuery>
+      </MediaQuery> */}
 
       {/* mobile display */}
-      {display === 'list' && (
+      {/* {display === 'list' && (
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
           <Stack spacing="xs">
             {list?.map((each: TStation, i: number) => (
@@ -141,8 +148,8 @@ export default function Results({ list, query, loading = false }: Props) {
             ))}
           </Stack>
         </MediaQuery>
-      )}
-      {display === 'map' && (
+      )} */}
+      {/* display === 'map' && (
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
           <Paper withBorder style={{ overflow: 'hidden' }}>
             <Map
@@ -186,7 +193,7 @@ export default function Results({ list, query, loading = false }: Props) {
             </Map>
           </Paper>
         </MediaQuery>
-      )}
+              ) */}
     </>
   );
 }
