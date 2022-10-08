@@ -92,8 +92,14 @@ export default function HomePage() {
           </Alert>
         )}
 
-        {data && data.length > 0 && <Results list={data} query={searchQuery} />}
-        {!data && searchQuery.lat !== 0 && searchQuery.lng !== 0 && 'Loading...'}
+        {/* only show results when user initiated search */}
+        {searchQuery.lat !== 0 && searchQuery.lng !== 0 && (
+          <Results
+            list={data}
+            query={searchQuery}
+            loading={!data && searchQuery.lat !== 0 && searchQuery.lng !== 0}
+          />
+        )}
       </Container>
       <AppFooter />
     </>
