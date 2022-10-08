@@ -3,23 +3,21 @@ import {
   Group,
   MediaQuery,
   SegmentedControl,
-  // Group,
-  // Stack,
+  Stack,
   Paper,
   Image,
   Badge,
   ActionIcon,
 } from '@mantine/core';
+import { useViewportSize } from '@mantine/hooks';
 import PedalBikeIcon from '@mui/icons-material/PedalBike';
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import DockIcon from '@mui/icons-material/Dock';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
-// import { Marker } from 'react-map-gl';
-// import Station from '../Station/Station';
+import Station from '../Station/Station';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useViewportSize } from '@mantine/hooks';
 
 const returnIcon = (type: TSearchQuery['item']) => {
   if (type === 'bikes') return <PedalBikeIcon fontSize="small" />;
@@ -43,11 +41,8 @@ export default function Results({ list, query, loading = false }: Props) {
   const [display, setDisplay] = useState<string>('stations');
   const [popup, setPopup] = useState<TStation | null>();
   const { width } = useViewportSize();
-  const [mode, setMode] = useState('full');
-  useEffect(() => {
-    width <= 800 && setMode('mobile');
-  }, [width]);
-  console.log(loading, mode, list, query);
+
+  console.log(loading, list, query);
 
   const markers = list?.map((each, index) => (
     <Marker
@@ -113,7 +108,13 @@ export default function Results({ list, query, loading = false }: Props) {
       </Map>
     </Paper>
   );
-  const stations = <div>Stations</div>;
+  const stations = (
+    <Stack spacing="xs" justify="space-between">
+      {list?.map((each, i) => (
+        <Station key={i} station={each} />
+      ))}
+    </Stack>
+  );
 
   return (
     <>
@@ -137,115 +138,6 @@ export default function Results({ list, query, loading = false }: Props) {
         {width < 800 && display === 'stations' && stations}
         {width < 800 && display === 'map' && map}
       </Group>
-
-      {/* full-screen display */}
-      {/* <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-        <Group position="center" grow>
-          <Paper withBorder style={{ overflow: 'hidden' }}>
-            <Map
-              initialViewState={{
-                longitude: query?.lng,
-                latitude: query?.lat,
-                zoom: 15,
-              }}
-              style={{ width: '100%', height: 500 }}
-              mapStyle="mapbox://styles/mapbox/streets-v11"
-              mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-              attributionControl={false}
-            >
-              <Marker longitude={query?.lng} latitude={query?.lat}>
-                <Image src="/icons/current_location.svg" width={30} />
-              </Marker>
-
-              {markers}
-              {popup && (
-                <Popup
-                  anchor="bottom"
-                  longitude={popup.lon}
-                  latitude={popup.lat}
-                  onClose={() => setPopup(null)}
-                  offset={15}
-                  closeButton={false}
-                >
-                  <ActionIcon
-                    color="brandGreen"
-                    size="md"
-                    style={{ marginLeft: 'auto' }}
-                    component="a"
-                    aria-label="Navigate to station with Google Maps"
-                    target="_blank"
-                    href={`https://www.google.ca/maps/dir//${popup.lat},${popup.lon}/`}
-                  >
-                    <DirectionsIcon sx={{ fontSize: 25 }} />
-                  </ActionIcon>
-                </Popup>
-              )}
-            </Map>
-          </Paper>
-
-          <Stack spacing="xs" justify="space-between">
-            {list?.map((each, i) => (
-              <Station key={i} station={each} />
-            ))}
-          </Stack>
-        </Group>
-      </MediaQuery> */}
-
-      {/* mobile display */}
-      {/* {display === 'list' && (
-        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-          <Stack spacing="xs">
-            {list?.map((each: TStation, i: number) => (
-              <Station key={i} station={each} />
-            ))}
-          </Stack>
-        </MediaQuery>
-      )} */}
-      {/* display === 'map' && (
-        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-          <Paper withBorder style={{ overflow: 'hidden' }}>
-            <Map
-              initialViewState={{
-                longitude: query?.lng,
-                latitude: query?.lat,
-                zoom: 15,
-              }}
-              style={{ width: '100%', height: 500 }}
-              mapStyle="mapbox://styles/mapbox/streets-v11"
-              mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-              attributionControl={false}
-            >
-              <Marker longitude={query?.lng} latitude={query?.lat}>
-                <Image src="/icons/current_location.svg" width={30} />
-              </Marker>
-
-              {markers}
-              {popup && (
-                <Popup
-                  anchor="bottom"
-                  longitude={popup.lon}
-                  latitude={popup.lat}
-                  onClose={() => setPopup(null)}
-                  offset={15}
-                  closeButton={false}
-                >
-                  <ActionIcon
-                    color="brandGreen"
-                    size="md"
-                    style={{ marginLeft: 'auto' }}
-                    component="a"
-                    aria-label="Navigate to station with Google Maps"
-                    target="_blank"
-                    href={`https://www.google.ca/maps/dir//${popup.lat},${popup.lon}/`}
-                  >
-                    <DirectionsIcon sx={{ fontSize: 25 }} />
-                  </ActionIcon>
-                </Popup>
-              )}
-            </Map>
-          </Paper>
-        </MediaQuery>
-              ) */}
     </>
   );
 }
