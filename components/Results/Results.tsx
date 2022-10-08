@@ -26,10 +26,24 @@ const returnIcon = (type: TSearchQuery['item']) => {
   return <DockIcon fontSize="small" />;
 };
 
-const returnNumber = (type: TSearchQuery['item'], station: TStation) => {
+const returnNumber = (type: TSearchQuery['item'], station: TStation): number => {
   if (type === 'bikes') return station.num_bikes_available_types.mechanical;
   if (type === 'e-bikes') return station.num_bikes_available_types.ebike;
   return station.num_docks_available;
+};
+
+const calculateBounds = (
+  stations: TStation[],
+  query: TSearchQuery
+): [number, number, number, number] => {
+  const listOfLng = stations.map((each) => each.lon).concat(query.lng);
+  const listOfLat = stations.map((each) => each.lat).concat(query.lat);
+  return [
+    Math.max(...listOfLng) - 0.0005,
+    Math.max(...listOfLat) + 0.0005,
+    Math.min(...listOfLng) + 0.0005,
+    Math.min(...listOfLat) - 0.0005,
+  ];
 };
 
 type Props = {
@@ -42,8 +56,6 @@ export default function Results({ list, query, loading = false }: Props) {
   const [display, setDisplay] = useState<string>('stations');
   const [popup, setPopup] = useState<TStation | null>();
   const { width } = useViewportSize();
-
-  console.log(loading, list, query);
 
   const markers = list?.map((each, index) => (
     <Marker
@@ -74,16 +86,12 @@ export default function Results({ list, query, loading = false }: Props) {
         <>
           {list && query && list.length > 0 && (
             <Map
+              reuseMaps
               initialViewState={{
                 longitude: query?.lng,
                 latitude: query?.lat,
                 zoom: 15,
-                bounds: [
-                  query?.lng,
-                  query?.lat,
-                  list[list.length - 1].lon,
-                  list[list.length - 1].lat,
-                ],
+                bounds: calculateBounds(list, query),
               }}
               style={{ width: '100%', height: 500 }}
               mapStyle="mapbox://styles/mapbox/streets-v11"
