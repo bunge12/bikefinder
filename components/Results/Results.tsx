@@ -51,6 +51,7 @@ export default function Results({ list, query }: Props) {
     >
       <Badge
         size="md"
+        variant="filled"
         leftSection={returnIcon(query.item)}
         styles={() => ({ leftSection: { alignSelf: 'baseline' } })}
       >
