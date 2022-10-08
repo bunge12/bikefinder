@@ -39,10 +39,10 @@ const calculateBounds = (
   const listOfLng = stations.map((each) => each.lon).concat(query.lng);
   const listOfLat = stations.map((each) => each.lat).concat(query.lat);
   return [
-    Math.max(...listOfLng) - 0.001,
-    Math.max(...listOfLat) + 0.001,
-    Math.min(...listOfLng) + 0.001,
-    Math.min(...listOfLat) - 0.001,
+    Math.max(...listOfLng) + 0.0035,
+    Math.max(...listOfLat),
+    Math.min(...listOfLng) - 0.0035,
+    Math.min(...listOfLat),
   ];
 };
 
@@ -86,7 +86,7 @@ export default function Results({ list, query, loading = false }: Props) {
         <>
           {list && query && list.length > 0 && (
             <Map
-              reuseMaps
+              // reuseMaps
               initialViewState={{
                 longitude: query?.lng,
                 latitude: query?.lat,
