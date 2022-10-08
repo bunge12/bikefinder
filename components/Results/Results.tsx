@@ -72,12 +72,18 @@ export default function Results({ list, query, loading = false }: Props) {
         <Skeleton height={500} />
       ) : (
         <>
-          {list && list.length > 0 && (
+          {list && query && list.length > 0 && (
             <Map
               initialViewState={{
                 longitude: query?.lng,
                 latitude: query?.lat,
                 zoom: 15,
+                bounds: [
+                  query?.lng,
+                  query?.lat,
+                  list[list.length - 1].lon,
+                  list[list.length - 1].lat,
+                ],
               }}
               style={{ width: '100%', height: 500 }}
               mapStyle="mapbox://styles/mapbox/streets-v11"
