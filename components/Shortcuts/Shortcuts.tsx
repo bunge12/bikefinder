@@ -158,7 +158,7 @@ export default function Shortcuts({ searchQuery, onSearch }: Props) {
   ));
 
   return (
-    <Card withBorder radius="md" className={classes.card} mt="xl">
+    <Card withBorder radius="md" className={classes.card} mt="lg" mb="lg">
       <Group position="apart">
         <Text className={classes.title}>I&apos;m looking for...</Text>
       </Group>

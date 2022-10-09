@@ -6,17 +6,7 @@ import DockIcon from '@mui/icons-material/Dock';
 import DirectionsIcon from '@mui/icons-material/Directions';
 
 type Props = {
-  station?: {
-    name: string;
-    distance: number;
-    num_bikes_available_types: {
-      mechanical: number;
-      ebike: number;
-    };
-    num_docks_available: number;
-    lat: number;
-    lon: number;
-  };
+  station?: TStation;
 };
 
 const formatDistance = (distance: number): string => {
@@ -28,7 +18,7 @@ const formatDistance = (distance: number): string => {
 
 export default function Station({ station }: Props) {
   return (
-    <Card withBorder>
+    <Card withBorder p="xs">
       <Group>
         {station ? (
           <>
@@ -36,7 +26,7 @@ export default function Station({ station }: Props) {
             <Text size="sm">{formatDistance(station.distance)} away</Text>
           </>
         ) : (
-          <Skeleton width="100%" height="2rem" style={{ marginBottom: 10 }} />
+          <Skeleton width="100%" height="1.5rem" style={{ marginBottom: 8 }} />
         )}
       </Group>
       <Space h="sm" />
@@ -65,14 +55,14 @@ export default function Station({ station }: Props) {
         {station && (
           <ActionIcon
             color="brandGreen"
-            size="xl"
+            size="lg"
             style={{ marginLeft: 'auto' }}
             component="a"
             aria-label="Navigate to station with Google Maps"
             target="_blank"
             href={`https://www.google.ca/maps/dir//${station.lat},${station.lon}/`}
           >
-            <DirectionsIcon sx={{ fontSize: 40 }} />
+            <DirectionsIcon sx={{ fontSize: 35 }} />
           </ActionIcon>
         )}
       </Group>

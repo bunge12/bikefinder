@@ -1,12 +1,12 @@
-import { Text, Skeleton, Container, Stack, createStyles, Alert } from '@mantine/core';
+import { Container, createStyles, Alert } from '@mantine/core';
 import { useState } from 'react';
 import useSWR from 'swr';
 import { IconAlertCircle } from '@tabler/icons';
 import { NextSeo } from 'next-seo';
-import Station from '../components/Station/Station';
 import AppHeader from '../components/Header/Header';
 import AppFooter from '../components/Footer/Footer';
 import Shortcuts from '../components/Shortcuts/Shortcuts';
+import Results from '../components/Results/Results';
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -24,6 +24,11 @@ const useStyles = createStyles((theme) => ({
       width: '100%',
     },
   },
+  mapPlaceholder: {
+    [theme.fn.smallerThan('sm')]: {
+      display: 'none',
+    },
+  },
 }));
 
 const fetcher = async (url: string, query: object) => {
@@ -34,22 +39,14 @@ const fetcher = async (url: string, query: object) => {
   return res.json();
 };
 
-type SearchQuery = {
-  stations: number;
-  quantity: number;
-  item: string;
-  lat: number | null;
-  lng: number | null;
-};
-
 export default function HomePage() {
   const { classes } = useStyles();
-  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
+  const [searchQuery, setSearchQuery] = useState<TSearchQuery>({
     stations: 5,
     quantity: 1,
     item: '',
-    lat: null,
-    lng: null,
+    lat: 0,
+    lng: 0,
   });
 
   const { data } = useSWR(
@@ -79,40 +76,30 @@ export default function HomePage() {
       <AppHeader />
       <Container>
         <Shortcuts onSearch={setSearchQuery} searchQuery={searchQuery} />
-        <Text size="sm" align="center" style={{ padding: '0.5rem', marginTop: '1rem' }}>
-          {data && data.length > 0 && <>Showing {data.length} closest bike share stations:</>}
-          {!data && searchQuery.lat && searchQuery.lng && (
-            <Skeleton width="75%" height="1.25rem" style={{ margin: '0px auto' }} />
-          )}
-          {data && data.length === 0 && (
-            <Alert
-              className={classes.alert}
-              icon={<IconAlertCircle size={16} />}
-              title="Your search returned no results!"
-              styles={{
-                root: { margin: '0px auto' },
-                message: { textAlign: 'left' },
-              }}
-            >
-              Your search query returned no results. Please adjust your search parameters above and
-              click Show Results. Hope to get you biking as soon as possible! 🚲
-            </Alert>
-          )}
-        </Text>
-        <Stack spacing="xs">
-          {data &&
-            data.length > 0 &&
-            data.map((station: any, i: any) => <Station key={i} station={station} />)}
-          {!data && searchQuery.lat && searchQuery.lng && (
-            <>
-              <Station key={1} />
-              <Station key={2} />
-              <Station key={3} />
-              <Station key={4} />
-              <Station key={5} />
-            </>
-          )}
-        </Stack>
+
+        {data && data.length === 0 && (
+          <Alert
+            className={classes.alert}
+            icon={<IconAlertCircle size={16} />}
+            title="Your search returned no results!"
+            styles={{
+              root: { margin: '0px auto' },
+              message: { textAlign: 'left' },
+            }}
+          >
+            Your search query returned no results. Please adjust your search parameters above and
+            click Show Results. Hope to get you biking as soon as possible! 🚲
+          </Alert>
+        )}
+
+        {/* only show results when user initiated search */}
+        {searchQuery.lat !== 0 && searchQuery.lng !== 0 && (
+          <Results
+            list={data}
+            query={searchQuery}
+            loading={!data && searchQuery.lat !== 0 && searchQuery.lng !== 0}
+          />
+        )}
       </Container>
       <AppFooter />
     </>
